@@ -26,19 +26,9 @@ const userSchema = new mongoose.Schema({
     required: [true, 'Student ID is required'],
     unique: true
   },
-  phone: {
-    type: String,
-    trim: true
-  },
   isDriver: {
     type: Boolean,
     default: false
-  },
-  vehicle: {
-    make: String,
-    model: String,
-    color: String,
-    licensePlate: String
   },
   createdAt: {
     type: Date,

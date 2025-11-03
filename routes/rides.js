@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-// Test route
+// GET /api/rides
 router.get('/', (req, res) => {
   res.json({ 
     message: 'Ride routes are working!',

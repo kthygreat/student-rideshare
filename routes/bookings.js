@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-// Test route
+// GET /api/bookings
 router.get('/', (req, res) => {
   res.json({ 
     message: 'Booking routes are working!',

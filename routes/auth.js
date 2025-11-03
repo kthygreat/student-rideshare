@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-// Test route
+// GET /api/auth
 router.get('/', (req, res) => {
   res.json({ 
     message: 'Auth routes are working!',

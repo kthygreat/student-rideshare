@@ -32,3 +32,5 @@ router.get('/profile', authController.getProfile);
 router.get('/test-users', authController.getAllUsers);
 
 module.exports = router;
+// GET /api/auth/enhanced-profile - Get Zimride-style profile
+router.get('/enhanced-profile', authController.getEnhancedProfile);

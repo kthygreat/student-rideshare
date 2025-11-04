@@ -263,3 +263,201 @@ exports.getAllUsers = (_req, res) => {
     });
   }
 };
+// User Registration with Zimride-style fields
+exports.register = (req, res) => {
+  try {
+    const { 
+      username, 
+      email, 
+      password, 
+      studentId, 
+      phone, 
+      isDriver,
+      program,
+      graduationYear,
+      vehicle,  // { make, model, color, licensePlate, year }
+      ridePreferences // { music, conversation, smoking, pets }
+    } = req.body;
+
+    console.log('📝 Zimride-style registration:', { username, email, program });
+
+    // Enhanced validation
+    if (!username || !email || !password || !studentId || !program || !graduationYear) {
+      return res.status(400).json({
+        success: false,
+        message: 'Missing required fields: username, email, password, studentId, program, graduationYear'
+      });
+    }
+
+    // Check if user already exists
+    const existingUser = findExistingUser(username, email, studentId);
+    if (existingUser) {
+      return res.status(400).json({
+        success: false,
+        message: 'User with this email, username, or student ID already exists'
+      });
+    }
+
+    // Create new user with Zimride fields
+    const newUser = {
+      id: `user_${mockUsers.length + 1}`,
+      username,
+      email,
+      password,
+      studentId,
+      phone: phone || '',
+      isDriver: isDriver || false,
+      program,
+      graduationYear,
+      university: 'Centennial College', // Default for now
+      vehicle: vehicle || {},
+      ridePreferences: ridePreferences || {
+        music: 'casual',
+        conversation: 'casual',
+        smoking: false,
+        pets: false
+      },
+      rating: {
+        average: 0,
+        count: 0,
+        breakdown: {
+          punctuality: 0,
+          safety: 0,
+          cleanliness: 0,
+          friendliness: 0
+        }
+      },
+      profileCompletion: 0,
+      profileComplete: false,
+      createdAt: new Date()
+    };
+
+    // Calculate profile completion
+    calculateProfileCompletion(newUser);
+
+    mockUsers.push(newUser);
+
+    console.log('✅ New user registered with Zimride profile:', newUser.username);
+
+    res.status(201).json({
+      success: true,
+      message: 'User registered successfully with enhanced profile',
+      user: newUser,
+      profileCompletion: newUser.profileCompletion
+    });
+
+  } catch (error) {
+    console.error('❌ Registration error:', error);
+    res.status(400).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+
+// Helper function to calculate profile completion
+const calculateProfileCompletion = (user) => {
+  let completed = 0;
+  let total = 0;
+  
+  // Basic info (30%)
+  total += 3;
+  if (user.username) completed += 1;
+  if (user.email) completed += 1;
+  if (user.phone) completed += 1;
+  
+  // Academic info (30%)
+  total += 3;
+  if (user.program) completed += 1;
+  if (user.graduationYear) completed += 1;
+  if (user.studentId) completed += 1;
+  
+  // Driver info (20% if driver)
+  if (user.isDriver) {
+    total += 2;
+    if (user.vehicle.make) completed += 1;
+    if (user.vehicle.model) completed += 1;
+  }
+  
+  // Preferences (20%)
+  total += 2;
+  if (user.ridePreferences.music) completed += 1;
+  if (user.ridePreferences.conversation) completed += 1;
+  
+  user.profileCompletion = Math.round((completed / total) * 100);
+  user.profileComplete = user.profileCompletion >= 80;
+};
+// Get enhanced user profile (Zimride-style)
+exports.getEnhancedProfile = async (req, res) => {
+  try {
+    console.log('👤 Enhanced profile request:', req.session.userId);
+
+    if (!req.session.userId) {
+      return res.status(401).json({
+        success: false,
+        message: 'Not authenticated. Please login first.'
+      });
+    }
+
+    // Find user in mock database
+    const user = mockUsers.find(u => u.id === req.session.userId);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found'
+      });
+    }
+
+    // Enhanced profile response (Zimride-style)
+    const enhancedProfile = {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      studentId: user.studentId,
+      phone: user.phone,
+      
+      // Academic info
+      academic: {
+        university: user.university,
+        program: user.program,
+        graduationYear: user.graduationYear
+      },
+      
+      // Driver info
+      driver: {
+        isDriver: user.isDriver,
+        vehicle: user.vehicle
+      },
+      
+      // Social & Preferences
+      preferences: user.ridePreferences,
+      
+      // Ratings & Trust
+      rating: user.rating,
+      trust: {
+        verifiedStudent: true,
+        profileComplete: user.profileComplete,
+        profileCompletion: user.profileCompletion
+      },
+      
+      // Stats (for future use)
+      stats: {
+        ridesGiven: 0, // Would come from rides data
+        ridesTaken: 0, // Would come from bookings data
+        memberSince: user.createdAt
+      }
+    };
+
+    res.json({
+      success: true,
+      profile: enhancedProfile
+    });
+
+  } catch (error) {
+    console.error('❌ Enhanced profile error:', error);
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+};

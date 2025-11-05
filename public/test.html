@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Pages - Student Rideshare</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            padding: 20px; 
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 { 
+            color: #2c3e50; 
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .page-list { 
+            display: grid; 
+            gap: 15px; 
+            margin-top: 20px; 
+        }
+        .page-link { 
+            padding: 20px; 
+            background: #f8f9fa; 
+            border-radius: 8px; 
+            text-decoration: none; 
+            color: #333;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+        .page-link:hover { 
+            background: #e9ecef; 
+            border-color: #3498db;
+            transform: translateY(-2px);
+        }
+        .status {
+            padding: 10px;
+            border-radius: 5px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .status-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚗 Student Rideshare - Page Test</h1>
+        <p>Click on any page to test it:</p>
+        
+        <div class="page-list">
+            <a href="/index.html" class="page-link">
+                <strong>🏠 Home Page</strong><br>
+                <small>Main landing page with overview</small>
+            </a>
+            <a href="/register.html" class="page-link">
+                <strong>📝 Registration Page</strong><br>
+                <small>Student registration form</small>
+            </a>
+            <a href="/login.html" class="page-link">
+                <strong>🔐 Login Page</strong><br>
+                <small>Student login form</small>
+            </a>
+            <a href="/dashboard.html" class="page-link">
+                <strong>📊 Student Dashboard</strong><br>
+                <small>Main user dashboard after login</small>
+            </a>
+            <a href="/admin.html" class="page-link">
+                <strong>👨‍💼 Admin Dashboard</strong><br>
+                <small>Administrator management panel</small>
+            </a>
+        </div>
+
+        <div class="status status-success">
+            <h3>✅ Frontend Complete!</h3>
+            <p>All basic pages are now created and connected.</p>
+        </div>
+
+        <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-top: 20px;">
+            <h4>Next Steps:</h4>
+            <ul>
+                <li>Test all pages by clicking the links above</li>
+                <li>Start your server with: <code>npm start</code></li>
+                <li>Visit: <code>http://localhost:3000/test.html</code></li>
+                <li>Customize colors and styling</li>
+                <li>Connect forms to backend APIs when ready</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Test backend connection
+        fetch('/api/auth')
+            .then(response => response.json())
+            .then(data => {
+                console.log('✅ Backend connection successful:', data);
+            })
+            .catch(error => {
+                console.log('ℹ️ Backend connection - normal during development');
+            });
+    </script>
+</body>
+</html>

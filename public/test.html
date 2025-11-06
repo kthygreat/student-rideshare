@@ -4,112 +4,399 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Test Pages - Student Rideshare</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body { 
-            font-family: Arial, sans-serif; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
             padding: 20px; 
-            background-color: #f4f4f4;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            min-height: 100vh;
         }
         .container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
-            background: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            padding: 50px 40px;
+            border-radius: 25px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255, 212, 59, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(45deg, #ffd43b, #ffc107);
         }
         h1 { 
-            color: #2c3e50; 
+            color: #495057; 
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, #495057, #212529);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .subtitle {
+            text-align: center;
+            color: #6c757d;
+            margin-bottom: 40px;
+            font-size: 1.2rem;
         }
         .page-list { 
             display: grid; 
-            gap: 15px; 
-            margin-top: 20px; 
+            gap: 20px; 
+            margin-top: 30px; 
         }
         .page-link { 
-            padding: 20px; 
-            background: #f8f9fa; 
-            border-radius: 8px; 
+            padding: 25px; 
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 15px; 
             text-decoration: none; 
             color: #333;
             border: 2px solid #e9ecef;
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        .page-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(45deg, #ffd43b, #ffc107);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
         }
         .page-link:hover { 
-            background: #e9ecef; 
-            border-color: #3498db;
-            transform: translateY(-2px);
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border-color: #ffc107;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .page-link:hover::before {
+            transform: scaleX(1);
+        }
+        .page-icon {
+            font-size: 2rem;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(45deg, #ffd43b, #ffc107);
+            border-radius: 12px;
+            color: #343a40;
+            transition: all 0.3s ease;
+        }
+        .page-link:hover .page-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+        .page-info {
+            flex: 1;
+        }
+        .page-info strong {
+            display: block;
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+            color: #495057;
+        }
+        .page-info small {
+            color: #6c757d;
+            font-size: 0.95rem;
         }
         .status {
-            padding: 10px;
-            border-radius: 5px;
-            margin: 20px 0;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 30px 0;
             text-align: center;
+            border-left: 4px solid;
+            animation: slideIn 0.8s ease;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         .status-success {
-            background: #d4edda;
+            background: rgba(40, 167, 69, 0.1);
             color: #155724;
-            border: 1px solid #c3e6cb;
+            border-left-color: #28a745;
+        }
+        .status-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: #28a745;
+        }
+        .next-steps {
+            background: linear-gradient(135deg, #495057 0%, #343a40 100%);
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 30px;
+            color: white;
+        }
+        .next-steps h4 {
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .next-steps h4 i {
+            color: #ffc107;
+        }
+        .next-steps ul {
+            list-style: none;
+            padding: 0;
+        }
+        .next-steps li {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .next-steps li:last-child {
+            border-bottom: none;
+        }
+        .next-steps li i {
+            color: #ffc107;
+            width: 20px;
+        }
+        code {
+            background: rgba(255,255,255,0.1);
+            padding: 4px 8px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            color: #ffc107;
+        }
+        .fade-in {
+            animation: fadeIn 0.8s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+            .page-link {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+            .page-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 1.5rem;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🚗 Student Rideshare - Page Test</h1>
-        <p>Click on any page to test it:</p>
+    <div class="container fade-in">
+        <h1><i class="fas fa-vial"></i> Student Rideshare - Page Test</h1>
+        <p class="subtitle">Click on any page to test it and verify functionality</p>
         
         <div class="page-list">
             <a href="/index.html" class="page-link">
-                <strong>🏠 Home Page</strong><br>
-                <small>Main landing page with overview</small>
+                <div class="page-icon">
+                    <i class="fas fa-home"></i>
+                </div>
+                <div class="page-info">
+                    <strong>Home Page</strong>
+                    <small>Main landing page with overview and features</small>
+                </div>
+                <i class="fas fa-chevron-right" style="color: #6c757d;"></i>
             </a>
             <a href="/register.html" class="page-link">
-                <strong>📝 Registration Page</strong><br>
-                <small>Student registration form</small>
+                <div class="page-icon">
+                    <i class="fas fa-user-plus"></i>
+                </div>
+                <div class="page-info">
+                    <strong>Registration Page</strong>
+                    <small>Student registration form with role selection</small>
+                </div>
+                <i class="fas fa-chevron-right" style="color: #6c757d;"></i>
             </a>
             <a href="/login.html" class="page-link">
-                <strong>🔐 Login Page</strong><br>
-                <small>Student login form</small>
+                <div class="page-icon">
+                    <i class="fas fa-sign-in-alt"></i>
+                </div>
+                <div class="page-info">
+                    <strong>Login Page</strong>
+                    <small>Secure student login with validation</small>
+                </div>
+                <i class="fas fa-chevron-right" style="color: #6c757d;"></i>
             </a>
             <a href="/dashboard.html" class="page-link">
-                <strong>📊 Student Dashboard</strong><br>
-                <small>Main user dashboard after login</small>
+                <div class="page-icon">
+                    <i class="fas fa-tachometer-alt"></i>
+                </div>
+                <div class="page-info">
+                    <strong>Student Dashboard</strong>
+                    <small>Main user dashboard after successful login</small>
+                </div>
+                <i class="fas fa-chevron-right" style="color: #6c757d;"></i>
             </a>
             <a href="/admin.html" class="page-link">
-                <strong>👨‍💼 Admin Dashboard</strong><br>
-                <small>Administrator management panel</small>
+                <div class="page-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <div class="page-info">
+                    <strong>Admin Dashboard</strong>
+                    <small>Administrator management and analytics panel</small>
+                </div>
+                <i class="fas fa-chevron-right" style="color: #6c757d;"></i>
             </a>
         </div>
 
-        <div class="status status-success">
+        <div class="status status-success fade-in" style="animation-delay: 0.2s;">
+            <div class="status-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
             <h3>✅ Frontend Complete!</h3>
-            <p>All basic pages are now created and connected.</p>
+            <p>All basic pages are now created with enhanced design and animations.</p>
         </div>
 
-        <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-top: 20px;">
-            <h4>Next Steps:</h4>
+        <div class="next-steps fade-in" style="animation-delay: 0.4s;">
+            <h4><i class="fas fa-road"></i> Next Steps:</h4>
             <ul>
-                <li>Test all pages by clicking the links above</li>
-                <li>Start your server with: <code>npm start</code></li>
-                <li>Visit: <code>http://localhost:3000/test.html</code></li>
-                <li>Customize colors and styling</li>
-                <li>Connect forms to backend APIs when ready</li>
+                <li>
+                    <i class="fas fa-check-circle"></i>
+                    <span>Test all pages by clicking the links above</span>
+                </li>
+                <li>
+                    <i class="fas fa-server"></i>
+                    <span>Start your server with: <code>npm start</code></span>
+                </li>
+                <li>
+                    <i class="fas fa-globe"></i>
+                    <span>Visit: <code>http://localhost:3000/test.html</code></span>
+                </li>
+                <li>
+                    <i class="fas fa-palette"></i>
+                    <span>Customize colors and styling as needed</span>
+                </li>
+                <li>
+                    <i class="fas fa-plug"></i>
+                    <span>Connect forms to backend APIs when ready</span>
+                </li>
+                <li>
+                    <i class="fas fa-mobile-alt"></i>
+                    <span>Test responsive design on different devices</span>
+                </li>
             </ul>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #e9ecef;">
+            <p style="color: #6c757d;">
+                <i class="fas fa-code-branch"></i> 
+                Student Rideshare Frontend - Ready for Development
+            </p>
         </div>
     </div>
 
     <script>
-        // Test backend connection
-        fetch('/api/auth')
-            .then(response => response.json())
-            .then(data => {
+        // Test backend connection with enhanced feedback
+        const testBackendConnection = async () => {
+            try {
+                const response = await fetch('/api/auth');
+                const data = await response.json();
                 console.log('✅ Backend connection successful:', data);
-            })
-            .catch(error => {
+                
+                // Show success notification
+                showNotification('Backend connection established!', 'success');
+            } catch (error) {
                 console.log('ℹ️ Backend connection - normal during development');
+                
+                // Show info notification for development
+                showNotification('Running in development mode - backend connection test skipped', 'info');
+            }
+        };
+
+        // Enhanced notification system
+        function showNotification(message, type = 'info') {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 20px;
+                background: ${type === 'success' ? '#28a745' : type === 'error' ? '#dc3545' : '#007bff'};
+                color: white;
+                border-radius: 10px;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+                z-index: 1000;
+                transform: translateX(100%);
+                transition: transform 0.3s ease;
+                max-width: 300px;
+            `;
+            notification.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-triangle' : 'info-circle'}"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Animate in
+            setTimeout(() => notification.style.transform = 'translateX(0)', 100);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.style.transform = 'translateX(100%)';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // Add click animations to page links
+        document.querySelectorAll('.page-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                // Add click feedback
+                this.style.transform = 'scale(0.98)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 150);
             });
+        });
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Test backend connection after a short delay
+            setTimeout(testBackendConnection, 1000);
+            
+            // Add pulse animation to status icon
+            const statusIcon = document.querySelector('.status-icon');
+            if (statusIcon) {
+                statusIcon.classList.add('pulse');
+            }
+        });
     </script>
 </body>
 </html>

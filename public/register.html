@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register - Student Rideshare</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -11,173 +12,554 @@
             box-sizing: border-box;
         }
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
             color: #333;
-            background-color: #f4f4f4;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
         .header {
-            background: #2c3e50;
+            background: linear-gradient(135deg, #495057 0%, #343a40 100%);
             color: white;
             padding: 1rem 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
         }
         .nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 30px;
+        }
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .logo {
+            height: 40px;
+            width: auto;
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+        .logo:hover {
+            transform: scale(1.05);
+        }
+        .nav h1 {
+            font-weight: 700;
+            font-size: 1.5rem;
+            background: linear-gradient(45deg, #ffd43b, #ffc107);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 25px;
         }
         .nav-links a {
-            color: white;
+            color: #f8f9fa;
             text-decoration: none;
-            margin-left: 20px;
+            padding: 8px 16px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        .nav-links a:hover {
+            background: rgba(255, 212, 59, 0.1);
+            color: #ffd43b;
+            transform: translateY(-2px);
         }
         .container {
-            max-width: 600px;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            max-width: 700px;
             margin: 40px auto;
-            padding: 0 20px;
+            padding: 0 30px;
         }
         .card {
-            background: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            padding: 50px 40px;
+            border-radius: 25px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255, 212, 59, 0.2);
+            width: 100%;
+            transform: translateY(0);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(45deg, #ffd43b, #ffc107);
+        }
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+        }
+        .card h2 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            text-align: center;
+            background: linear-gradient(45deg, #495057, #212529);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .card > p {
+            text-align: center;
+            color: #6c757d;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
         }
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+            position: relative;
+        }
+        .form-row .form-group {
+            margin-bottom: 25px;
         }
         label {
             display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #495057;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        label i {
+            color: #ffc107;
+            width: 20px;
+        }
+        .input-group {
+            position: relative;
         }
         input, select {
             width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+            padding: 15px 15px 15px 45px;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
             font-size: 16px;
+            transition: all 0.3s ease;
+            background: #ffffff;
+            appearance: none;
+        }
+        select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%236c757d' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 12px;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: #ffc107;
+            box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.1);
+            transform: translateY(-2px);
+        }
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6c757d;
+            transition: all 0.3s ease;
+        }
+        input:focus + .input-icon, select:focus + .input-icon {
+            color: #ffc107;
         }
         .btn {
-            display: inline-block;
-            padding: 12px 24px;
-            background: #3498db;
-            color: white;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 16px 24px;
+            background: linear-gradient(45deg, #ffd43b, #ffc107);
+            color: #343a40;
             text-decoration: none;
             border: none;
-            border-radius: 5px;
+            border-radius: 50px;
             cursor: pointer;
             font-size: 16px;
+            font-weight: 600;
             width: 100%;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(255, 193, 7, 0.3);
+            margin-top: 10px;
         }
         .btn:hover {
-            background: #2980b9;
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 10px 30px rgba(255, 193, 7, 0.5);
+            background: linear-gradient(45deg, #ffc107, #ffd43b);
         }
-        .alert {
-            padding: 12px;
-            border-radius: 5px;
-            margin-bottom: 20px;
+        .btn:active {
+            transform: translateY(-1px);
+        }
+        .btn-loading {
+            pointer-events: none;
+            opacity: 0.8;
+        }
+        .btn-loading .btn-text {
             display: none;
         }
+        .btn-loading::after {
+            content: '';
+            width: 20px;
+            height: 20px;
+            border: 2px solid transparent;
+            border-top: 2px solid #343a40;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        .alert {
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            display: none;
+            animation: slideIn 0.5s ease;
+            border-left: 4px solid;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
         .alert-success {
-            background: #d4edda;
+            background: rgba(40, 167, 69, 0.1);
             color: #155724;
-            border: 1px solid #c3e6cb;
+            border-left-color: #28a745;
         }
         .alert-error {
-            background: #f8d7da;
+            background: rgba(220, 53, 69, 0.1);
             color: #721c24;
-            border: 1px solid #f5c6cb;
+            border-left-color: #dc3545;
         }
         .login-link {
             text-align: center;
-            margin-top: 20px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e9ecef;
+        }
+        .login-link p {
+            color: #6c757d;
+        }
+        .login-link a {
+            color: #ffc107;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .login-link a:hover {
+            color: #ffd43b;
+            text-decoration: underline;
+        }
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #6c757d;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .password-toggle:hover {
+            color: #ffc107;
+        }
+        .role-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .role-option:hover {
+            border-color: #ffc107;
+            background: rgba(255, 193, 7, 0.05);
+        }
+        .role-option.selected {
+            border-color: #ffc107;
+            background: rgba(255, 193, 7, 0.1);
+        }
+        .role-icon {
+            font-size: 1.5rem;
+            color: #ffc107;
+        }
+        .role-info h4 {
+            margin: 0;
+            color: #495057;
+        }
+        .role-info p {
+            margin: 5px 0 0;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .fade-in {
+            animation: fadeIn 0.8s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @media (max-width: 768px) {
+            .nav {
+                flex-direction: column;
+                gap: 15px;
+                padding: 0 20px;
+            }
+            .container {
+                padding: 0 20px;
+                margin: 20px auto;
+            }
+            .card {
+                padding: 30px 25px;
+            }
+            .form-row {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
     <header class="header">
         <nav class="nav">
-            <h1>🚗 Student Rideshare</h1>
+            <div class="logo-container">
+                <img src="/assets/logo.png" alt="Student Rideshare Logo" class="logo">
+                <h1>Student Rideshare</h1>
+            </div>
             <div class="nav-links">
-                <a href="/index.html">Home</a>
-                <a href="/login.html">Login</a>
-                <a href="/admin.html">Admin</a>
+                <a href="/index.html"><i class="fas fa-home"></i> Home</a>
+                <a href="/login.html"><i class="fas fa-sign-in-alt"></i> Login</a>
+                <a href="/admin.html"><i class="fas fa-shield-alt"></i> Admin</a>
             </div>
         </nav>
     </header>
 
     <div class="container">
-        <div class="card">
-            <h2>Student Registration</h2>
+        <div class="card fade-in">
+            <h2><i class="fas fa-user-plus"></i> Student Registration</h2>
+            <p>Join our community of student drivers and riders</p>
             
             <div id="message" class="alert"></div>
 
             <form id="registerForm">
-                <div class="form-group">
-                    <label for="username">Username:</label>
-                    <input type="text" id="username" name="username" required>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="username">
+                            <i class="fas fa-user"></i> Username
+                        </label>
+                        <div class="input-group">
+                            <input type="text" id="username" name="username" required placeholder="Choose a username">
+                            <div class="input-icon">
+                                <i class="fas fa-user"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="studentId">
+                            <i class="fas fa-id-card"></i> Student ID
+                        </label>
+                        <div class="input-group">
+                            <input type="text" id="studentId" name="studentId" required placeholder="Enter your student ID">
+                            <div class="input-icon">
+                                <i class="fas fa-id-card"></i>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" required>
+                    <label for="email">
+                        <i class="fas fa-envelope"></i> Email Address
+                    </label>
+                    <div class="input-group">
+                        <input type="email" id="email" name="email" required placeholder="Enter your student email">
+                        <div class="input-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="password">Password:</label>
-                    <input type="password" id="password" name="password" required minlength="6">
+                    <label for="password">
+                        <i class="fas fa-lock"></i> Password
+                    </label>
+                    <div class="input-group">
+                        <input type="password" id="password" name="password" required minlength="6" placeholder="Create a strong password">
+                        <div class="input-icon">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <button type="button" class="password-toggle" id="passwordToggle">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <small style="color: #6c757d; margin-top: 5px; display: block;">Must be at least 6 characters long</small>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="program">
+                            <i class="fas fa-graduation-cap"></i> Program
+                        </label>
+                        <div class="input-group">
+                            <input type="text" id="program" name="program" required placeholder="e.g., Computer Science">
+                            <div class="input-icon">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="graduationYear">
+                            <i class="fas fa-calendar-alt"></i> Graduation Year
+                        </label>
+                        <div class="input-group">
+                            <input type="number" id="graduationYear" name="graduationYear" min="2023" max="2030" required placeholder="2024">
+                            <div class="input-icon">
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="studentId">Student ID:</label>
-                    <input type="text" id="studentId" name="studentId" required>
+                    <label for="phone">
+                        <i class="fas fa-phone"></i> Phone (Optional)
+                    </label>
+                    <div class="input-group">
+                        <input type="tel" id="phone" name="phone" placeholder="Enter your phone number">
+                        <div class="input-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="program">Program:</label>
-                    <input type="text" id="program" name="program" required>
+                    <label style="margin-bottom: 15px;">
+                        <i class="fas fa-users"></i> I want to be a:
+                    </label>
+                    <div id="roleOptions">
+                        <div class="role-option" data-value="rider">
+                            <div class="role-icon">
+                                <i class="fas fa-user-friends"></i>
+                            </div>
+                            <div class="role-info">
+                                <h4>Rider Only</h4>
+                                <p>Find rides from student drivers</p>
+                            </div>
+                        </div>
+                        <div class="role-option" data-value="driver">
+                            <div class="role-icon">
+                                <i class="fas fa-car"></i>
+                            </div>
+                            <div class="role-info">
+                                <h4>Driver Only</h4>
+                                <p>Offer rides and earn money</p>
+                            </div>
+                        </div>
+                        <div class="role-option" data-value="both">
+                            <div class="role-icon">
+                                <i class="fas fa-user-check"></i>
+                            </div>
+                            <div class="role-info">
+                                <h4>Both Driver & Rider</h4>
+                                <p>Switch between both roles</p>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" id="role" name="role" required>
                 </div>
 
-                <div class="form-group">
-                    <label for="graduationYear">Graduation Year:</label>
-                    <input type="number" id="graduationYear" name="graduationYear" min="2023" max="2030" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="role">I want to be a:</label>
-                    <select id="role" name="role" required>
-                        <option value="rider">Rider Only</option>
-                        <option value="driver">Driver Only</option>
-                        <option value="both">Both Driver & Rider</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="phone">Phone (optional):</label>
-                    <input type="tel" id="phone" name="phone">
-                </div>
-
-                <button type="submit" class="btn">Register</button>
+                <button type="submit" class="btn" id="registerBtn">
+                    <span class="btn-text">
+                        <i class="fas fa-user-plus"></i> Create Account
+                    </span>
+                </button>
             </form>
 
             <div class="login-link">
-                <p>Already have an account? <a href="/login.html">Login here</a></p>
+                <p>Already have an account? <a href="/login.html">Sign in here</a></p>
             </div>
         </div>
     </div>
 
     <script>
-        // Form submission handler
+        // Password toggle functionality
+        const passwordToggle = document.getElementById('passwordToggle');
+        const passwordInput = document.getElementById('password');
+        
+        passwordToggle.addEventListener('click', function() {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            this.innerHTML = type === 'password' ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
+        });
+
+        // Role selection functionality
+        const roleOptions = document.querySelectorAll('.role-option');
+        const roleInput = document.getElementById('role');
+        
+        roleOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                // Remove selected class from all options
+                roleOptions.forEach(opt => opt.classList.remove('selected'));
+                // Add selected class to clicked option
+                this.classList.add('selected');
+                // Set the hidden input value
+                roleInput.value = this.getAttribute('data-value');
+            });
+        });
+
+        // Enhanced form submission handler
         document.getElementById('registerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
+            
+            const registerBtn = document.getElementById('registerBtn');
+            const messageEl = document.getElementById('message');
+            
+            // Validate role selection
+            if (!roleInput.value) {
+                messageEl.textContent = 'Please select your preferred role.';
+                messageEl.className = 'alert alert-error';
+                messageEl.style.display = 'block';
+                return;
+            }
+            
+            // Show loading state
+            registerBtn.classList.add('btn-loading');
             
             const formData = new FormData(this);
             const data = Object.fromEntries(formData);
             
             try {
+                // Simulate API call delay for demo
+                await new Promise(resolve => setTimeout(resolve, 1500));
+                
+                // For demo purposes - in real app, this would be your actual API call
                 const response = await fetch('/api/auth/register', {
                     method: 'POST',
                     headers: {
@@ -186,30 +568,93 @@
                     body: JSON.stringify(data)
                 });
                 
-                const result = await response.json();
+                // Remove loading state
+                registerBtn.classList.remove('btn-loading');
                 
-                const messageEl = document.getElementById('message');
-                if (response.ok) {
-                    messageEl.textContent = 'Registration successful! Redirecting...';
+                if (response && response.ok) {
+                    const result = await response.json();
+                    
+                    messageEl.textContent = 'Registration successful! Redirecting to login...';
                     messageEl.className = 'alert alert-success';
                     messageEl.style.display = 'block';
+                    
+                    // Add success animation to button
+                    registerBtn.style.background = 'linear-gradient(45deg, #28a745, #20c997)';
+                    registerBtn.innerHTML = '<i class="fas fa-check"></i> Success! Redirecting...';
                     
                     // Redirect to login after 2 seconds
                     setTimeout(() => {
                         window.location.href = '/login.html';
                     }, 2000);
                 } else {
-                    messageEl.textContent = result.message || 'Registration failed';
+                    // Demo fallback for development
+                    if (!response) {
+                        throw new Error('API not available - this is normal in development');
+                    }
+                    
+                    const result = await response.json();
+                    messageEl.textContent = result.message || 'Registration failed. Please try again.';
+                    messageEl.className = 'alert alert-error';
+                    messageEl.style.display = 'block';
+                    
+                    // Add shake animation to form
+                    document.getElementById('registerForm').style.animation = 'shake 0.5s ease';
+                    setTimeout(() => {
+                        document.getElementById('registerForm').style.animation = '';
+                    }, 500);
+                }
+            } catch (error) {
+                // Remove loading state
+                registerBtn.classList.remove('btn-loading');
+                
+                // Demo success for development (remove in production)
+                if (error.message.includes('development')) {
+                    messageEl.textContent = 'Demo: Registration successful! Redirecting...';
+                    messageEl.className = 'alert alert-success';
+                    messageEl.style.display = 'block';
+                    
+                    registerBtn.style.background = 'linear-gradient(45deg, #28a745, #20c997)';
+                    registerBtn.innerHTML = '<i class="fas fa-check"></i> Demo Registration Success!';
+                    
+                    setTimeout(() => {
+                        window.location.href = '/login.html';
+                    }, 2000);
+                } else {
+                    messageEl.textContent = 'Network error. Please check your connection and try again.';
                     messageEl.className = 'alert alert-error';
                     messageEl.style.display = 'block';
                 }
-            } catch (error) {
-                const messageEl = document.getElementById('message');
-                messageEl.textContent = 'Network error. Please try again.';
-                messageEl.className = 'alert alert-error';
-                messageEl.style.display = 'block';
             }
         });
+
+        // Add shake animation for errors
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                25% { transform: translateX(-5px); }
+                75% { transform: translateX(5px); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Input focus effects
+        const inputs = document.querySelectorAll('input, select');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'scale(1.02)';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentElement.style.transform = 'scale(1)';
+            });
+        });
+
+        // Auto-select current year as default for graduation
+        const currentYear = new Date().getFullYear();
+        document.getElementById('graduationYear').value = currentYear + 1;
+        document.getElementById('graduationYear').setAttribute('min', currentYear);
+        document.getElementById('graduationYear').setAttribute('max', currentYear + 7);
     </script>
 </body>
 </html>

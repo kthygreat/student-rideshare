@@ -1,33 +1,25 @@
 const express = require('express');
+const bcrypt = require('bcryptjs');
 const User = require('../models/User');
 const router = express.Router();
 
-// Student Registration
+// POST /api/auth/register
 router.post('/register', async (req, res) => {
   try {
-    const { username, email, password, studentId, program, graduationYear, role, carDetails } = req.body;
-
-    // Check required fields
-    if (!username || !email || !password || !studentId || !program || !graduationYear || !role) {
-      return res.status(400).json({
-        success: false,
-        message: 'Missing required fields: username, email, password, studentId, program, graduationYear, role'
-      });
-    }
-
+    const { username, email, password, studentId, program, graduationYear, role } = req.body;
+    
     // Check if user already exists
     const existingUser = await User.findOne({ 
-      $or: [{ email }, { studentId }, { username }] 
+      $or: [{ email }, { studentId }] 
     });
     
     if (existingUser) {
       return res.status(400).json({
         success: false,
-        message: 'User already exists with this email, student ID, or username'
+        error: 'User with this email or student ID already exists'
       });
     }
-
-    // Create new user
+    
     const user = new User({
       username,
       email,
@@ -35,74 +27,68 @@ router.post('/register', async (req, res) => {
       studentId,
       program,
       graduationYear,
-      role,
-      carDetails: role === 'driver' || role === 'both' ? carDetails : undefined
+      role: role || 'rider'
     });
-
-    await user.save();
-
+    
+    const savedUser = await user.save();
+    
     res.status(201).json({
       success: true,
-      message: 'Student registered successfully!',
+      message: 'User registered successfully',
       user: {
-        id: user._id,
-        username: user.username,
-        email: user.email,
-        studentId: user.studentId,
-        program: user.program,
-        role: user.role
+        id: savedUser._id,
+        username: savedUser.username,
+        email: savedUser.email,
+        role: savedUser.role
       }
     });
-
   } catch (error) {
-    res.status(500).json({
+    res.status(400).json({
       success: false,
-      message: 'Server error during registration',
       error: error.message
     });
   }
 });
 
-// Login (for both students and admin)
+// POST /api/auth/login
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
-
-    // Find user
+    
+    // Find user by email
     const user = await User.findOne({ email });
+    
     if (!user) {
       return res.status(401).json({
         success: false,
-        message: 'Invalid email or password'
+        error: 'Invalid credentials'
       });
     }
-
-    // Check password
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
+    
+    // Check password using bcrypt
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    
+    if (!isPasswordValid) {
       return res.status(401).json({
         success: false,
-        message: 'Invalid email or password'
+        error: 'Invalid credentials'
       });
     }
-
+    
     res.json({
       success: true,
-      message: 'Login successful!',
+      message: 'Login successful',
       user: {
         id: user._id,
         username: user.username,
         email: user.email,
         role: user.role,
         isAdmin: user.isAdmin
-      },
-      token: 'jwt-token-placeholder' // You'll implement JWT later
+      }
     });
-
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: 'Server error during login',
       error: error.message
     });
   }

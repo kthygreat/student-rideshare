@@ -1,22 +1,15 @@
+// config/database.js
 const mongoose = require('mongoose');
 
 const connectDB = async () => {
   try {
-    // Use a simple local connection string
-    const conn = await mongoose.connect('mongodb://127.0.0.1:27017/student_rideshare', {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      serverSelectionTimeoutMS: 5000, // 5 second timeout
-      bufferCommands: false, // Disable buffering
-    });
+
+    const conn = await mongoose.connect("mongodb+srv://mugishakelvin75_db_userQYN0TUBreityXc2k:@cluster0.wrrg7ec.mongodb.net/your_database_name?retryWrites=true&w=majority&appName=Cluster0");
     
-    console.log(`✅ MongoDB Connected: ${conn.connection.host}`);
-    return true;
+    console.log(`MongoDB Connected: ${conn.connection.host}`);
   } catch (error) {
-    console.log('❌ MongoDB Connection Failed:', error.message);
-    console.log('💡 TIP: Install MongoDB locally or use MongoDB Atlas');
-    console.log('📚 For now, continuing without database...');
-    return false;
+    console.error('Database connection error:', error);
+    process.exit(1);
   }
 };
 

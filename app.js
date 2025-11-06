@@ -3,6 +3,10 @@ const path = require('path');
 const cors = require('cors');
 require('dotenv').config();
 
+// ✅ ADD THIS - Database connection
+const connectDB = require('./config/database');
+connectDB();
+
 const app = express();
 
 // Add CORS support (before your routes)
@@ -62,7 +66,6 @@ app.get('/', (req, res) => {
 const adminRoutes = require('./routes/admin');
 app.use('/api/admin', adminRoutes);
 
-
 // Handle 404 errors
 app.use('*', (req, res) => {
   res.status(404).json({
@@ -72,7 +75,9 @@ app.use('*', (req, res) => {
       'GET /api/auth',
       'GET /api/users', 
       'GET /api/rides',
-      'GET /api/bookings'
+      'GET /api/bookings',
+      'GET /api/admin/students',
+      'GET /api/admin/stats'
     ]
   });
 });
@@ -86,8 +91,7 @@ app.use((err, req, res, next) => {
   });
 });
 
-// ✅ ONLY ONE app.listen() CALL - THIS IS THE FIX
-const PORT = process.env.PORT || 5000; // Changed to 5000
+const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
   console.log('✨ ======================================== ✨');
@@ -100,4 +104,6 @@ app.listen(PORT, () => {
   console.log('   GET  /api/users');
   console.log('   GET  /api/rides');
   console.log('   GET  /api/bookings');
+  console.log('   GET  /api/admin/students');
+  console.log('   GET  /api/admin/stats');
 });

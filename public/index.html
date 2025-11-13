@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Rideshare</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f8f9fa 0%, #212529 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+        .header {
+            background: linear-gradient(135deg, #495057 0%, #343a40 100%);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .logo {
+            height: 50px;
+            width: auto;
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+        .logo:hover {
+            transform: scale(1.05);
+        }
+        .nav h1 {
+            font-weight: 700;
+            font-size: 1.5rem;
+            background: linear-gradient(45deg, #ffd43b, #ffc107);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+        .nav-links a {
+            color: #f8f9fa;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        .nav-links a:hover {
+            background: rgba(255, 212, 59, 0.1);
+            color: #ffd43b;
+            transform: translateY(-2px);
+        }
+        .hero {
+            text-align: center;
+            padding: 100px 0;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            margin: 40px 0;
+            border-radius: 25px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+            border: 1px solid rgba(255, 212, 59, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(45deg, #ffd43b, #ffc107);
+        }
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #495057, #212529);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: fadeIn 1s ease;
+        }
+        .hero p {
+            font-size: 1.4rem;
+            color: #6c757d;
+            max-width: 600px;
+            margin: 0 auto 40px;
+            animation: fadeIn 1s ease 0.3s both;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 30px;
+            background: linear-gradient(45deg, #ffd43b, #ffc107);
+            color: #343a40;
+            text-decoration: none;
+            border-radius: 50px;
+            margin: 10px 5px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(255, 193, 7, 0.3);
+            animation: fadeIn 1s ease 0.6s both;
+        }
+        .btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 10px 30px rgba(255, 193, 7, 0.5);
+            background: linear-gradient(45deg, #ffc107, #ffd43b);
+        }
+        .btn-secondary {
+            background: linear-gradient(45deg, #495057, #6c757d);
+            color: white;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        .btn-secondary:hover {
+            background: linear-gradient(45deg, #343a40, #495057);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin: 60px 0;
+        }
+        .feature-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            padding: 40px 30px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            border: 1px solid rgba(255, 212, 59, 0.1);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(45deg, #ffd43b, #ffc107);
+        }
+        .feature-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+        .feature-icon {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #ffd43b, #ffc107);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            transition: all 0.3s ease;
+        }
+        .feature-card:hover .feature-icon {
+            transform: scale(1.2);
+        }
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #495057;
+        }
+        .feature-card p {
+            color: #6c757d;
+            line-height: 1.7;
+        }
+        .stats-section {
+            background: linear-gradient(135deg, #495057 0%, #343a40 100%);
+            padding: 80px 0;
+            border-radius: 25px;
+            margin: 60px 0;
+            text-align: center;
+            color: white;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        .stat-item {
+            padding: 30px 20px;
+        }
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #ffd43b, #ffc107);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .stat-label {
+            font-size: 1.1rem;
+            color: #adb5bd;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .footer {
+            background: linear-gradient(135deg, #343a40 0%, #212529 100%);
+            color: white;
+            padding: 60px 0 30px;
+            border-radius: 25px 25px 0 0;
+            margin-top: 80px;
+        }
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        .footer-section h3 {
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #ffd43b, #ffc107);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .footer-section a {
+            color: #adb5bd;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+        .footer-section a:hover {
+            color: #ffd43b;
+            transform: translateX(5px);
+        }
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid #495057;
+            color: #adb5bd;
+        }
+        .fade-in {
+            animation: fadeIn 0.8s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        @media (max-width: 768px) {
+            .nav {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            .hero p {
+                font-size: 1.1rem;
+            }
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <div class="logo-container">
+                    <img src="/assets/RideShareLogo.png" alt="Student Rideshare Logo" class="logo"> 
+                    <h1>Student Rideshare</h1>
+                </div>
+                <div class="nav-links">
+                    <a href="/login.html"><i class="fas fa-sign-in-alt"></i> Login</a>
+                    <a href="/register.html"><i class="fas fa-user-plus"></i> Register</a>
+                    <a href="/admin.html"><i class="fas fa-shield-alt"></i> Admin</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hero fade-in">
+            <h1><i class="fas fa-car-side"></i> Welcome to Student Rideshare</h1>
+            <p>Connect with fellow students for safe, reliable, and affordable rides</p>
+            <div style="margin-top: 40px;">
+                <a href="/register.html" class="btn pulse">
+                    <i class="fas fa-rocket"></i> Get Started
+                </a>
+                <a href="/login.html" class="btn btn-secondary">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </a>
+            </div>
+        </section>
+
+        <section class="features-grid">
+            <div class="feature-card fade-in" style="animation-delay: 0.2s;">
+                <div class="feature-icon">
+                    <i class="fas fa-car"></i>
+                </div>
+                <h3>For Drivers</h3>
+                <p>Offer rides to fellow students, share travel costs, and make your commute more affordable while helping others.</p>
+                <div style="margin-top: 20px;">
+                    <a href="/register.html" class="btn" style="padding: 10px 20px; font-size: 0.9rem;">
+                        <i class="fas fa-road"></i> Start Driving
+                    </a>
+                </div>
+            </div>
+            <div class="feature-card fade-in" style="animation-delay: 0.4s;">
+                <div class="feature-icon">
+                    <i class="fas fa-user-friends"></i>
+                </div>
+                <h3>For Riders</h3>
+                <p>Find reliable rides from trusted student drivers in your area. Safe, convenient, and budget-friendly transportation.</p>
+                <div style="margin-top: 20px;">
+                    <a href="/register.html" class="btn" style="padding: 10px 20px; font-size: 0.9rem;">
+                        <i class="fas fa-search"></i> Find Rides
+                    </a>
+                </div>
+            </div>
+            <div class="feature-card fade-in" style="animation-delay: 0.6s;">
+                <div class="feature-icon">
+                    <i class="fas fa-university"></i>
+                </div>
+                <h3>Campus Community</h3>
+                <p>Connect exclusively with verified students from your university. Build trust within your campus network.</p>
+                <div style="margin-top: 20px;">
+                    <a href="/register.html" class="btn" style="padding: 10px 20px; font-size: 0.9rem;">
+                        <i class="fas fa-users"></i> Join Community
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="stats-section fade-in" style="animation-delay: 0.8s;">
+            <h2 style="font-size: 2.5rem; margin-bottom: 20px;">Why Choose Student Rideshare?</h2>
+            <p style="font-size: 1.2rem; color: #adb5bd; max-width: 600px; margin: 0 auto;">
+                Join thousands of students who trust our platform for their daily commute
+            </p>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number" id="studentsCount">0</div>
+                    <div class="stat-label">Students</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="ridesCount">0</div>
+                    <div class="stat-label">Rides Completed</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="campusesCount">0</div>
+                    <div class="stat-label">Campuses</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="savingsCount">0</div>
+                    <div class="stat-label">Money Saved</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Student Rideshare</h3>
+                    <p style="color: #adb5bd; line-height: 1.7;">
+                        Connecting students for safe, reliable, and affordable transportation solutions across campuses.
+                    </p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <a href="/login.html"><i class="fas fa-arrow-right"></i> Login</a>
+                    <a href="/register.html"><i class="fas fa-arrow-right"></i> Register</a>
+                    <a href="/dashboard.html"><i class="fas fa-arrow-right"></i> Dashboard</a>
+                    <a href="/admin.html"><i class="fas fa-arrow-right"></i> Admin</a>
+                </div>
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <a href="#"><i class="fas fa-arrow-right"></i> Help Center</a>
+                    <a href="#"><i class="fas fa-arrow-right"></i> Safety Guidelines</a>
+                    <a href="#"><i class="fas fa-arrow-right"></i> Contact Us</a>
+                    <a href="#"><i class="fas fa-arrow-right"></i> FAQ</a>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2024 Student Rideshare. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Animate stats counting up
+        function animateStats() {
+            animateCounter('studentsCount', 12500, 2000);
+            animateCounter('ridesCount', 38400, 2000);
+            animateCounter('campusesCount', 24, 2000);
+            animateCounter('savingsCount', 250, 2000);
+        }
+
+        // Animate number counting
+        function animateCounter(elementId, target, duration) {
+            const element = document.getElementById(elementId);
+            let start = 0;
+            const increment = target / (duration / 16);
+            const isMoney = elementId === 'savingsCount';
+            
+            const timer = setInterval(() => {
+                start += increment;
+                if (start >= target) {
+                    element.textContent = isMoney ? `$${target}K+` : target.toLocaleString();
+                    clearInterval(timer);
+                } else {
+                    element.textContent = isMoney ? `$${Math.floor(start)}K+` : Math.floor(start).toLocaleString();
+                }
+            }, 16);
+        }
+
+        // Test connection to backend
+        fetch('/api/auth')
+            .then(response => response.json())
+            .then(data => {
+                console.log('Backend connection successful:', data);
+                showNotification('Connected to server successfully!', 'success');
+            })
+            .catch(error => {
+                console.log('Backend connection test - this is normal during development');
+            });
+
+        // Enhanced notification system
+        function showNotification(message, type = 'info') {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 20px;
+                background: ${type === 'success' ? '#28a745' : type === 'error' ? '#dc3545' : '#007bff'};
+                color: white;
+                border-radius: 10px;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+                z-index: 1000;
+                transform: translateX(100%);
+                transition: transform 0.3s ease;
+                max-width: 300px;
+            `;
+            notification.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-triangle' : 'info-circle'}"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Animate in
+            setTimeout(() => notification.style.transform = 'translateX(0)', 100);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.style.transform = 'translateX(100%)';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // Initialize animations when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                animateStats();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

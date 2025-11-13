@@ -1,3 +1,7 @@
+// Add this at the very top of app.js
+import process from 'process';
+// or if using CommonJS:
+// const process = require('process');
 const express = require('express');
 const path = require('path');
 const cors = require('cors');

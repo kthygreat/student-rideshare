@@ -2,14 +2,17 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-require('dotenv').config(); //
-
+const path = require('path'); // Added for serving static files
+require('dotenv').config();
 
 const app = express();
 
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+// ✅ ADDED: Serve static files from public folder (CSS, JS, Images, etc.)
+app.use(express.static(path.join(__dirname, 'public')));
 
 // MongoDB Atlas Connection
 const dbURI = process.env.MONGODB_URI;
@@ -54,8 +57,13 @@ app.use('/api/rides', rideRoutes);
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/admin', adminRoutes);
 
-// Basic route
+// ✅ UPDATED: Serve frontend for the root route
 app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+// ✅ ADDED: API info endpoint (moved from root)
+app.get('/api', (req, res) => {
   res.json({ 
     message: 'Welcome to Student Rideshare Backend API',
     version: '1.0.0',
@@ -71,9 +79,26 @@ app.get('/', (req, res) => {
   });
 });
 
+// ✅ ADDED: Health check endpoint
+app.get('/health', (req, res) => {
+  const dbStatus = mongoose.connection.readyState === 1 ? 'connected' : 'disconnected';
+  res.json({ 
+    status: 'OK', 
+    database: dbStatus,
+    timestamp: new Date().toISOString()
+  });
+});
+
+// ✅ ADDED: Catch-all handler to serve frontend for all non-API routes
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
   console.log(`🚀 Student Rideshare Server running on port ${PORT}`);
   console.log(`🌐 Visit: http://localhost:${PORT}`);
+  console.log(`📁 Serving frontend from: ${path.join(__dirname, 'public')}`);
+  console.log(`⚡ API endpoints available at: http://localhost:${PORT}/api`);
 });

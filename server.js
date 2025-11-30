@@ -10,6 +10,15 @@ const app = express();
 // Middleware
 app.use(cors());
 app.use(express.json());
+const session = require('express-session');
+
+// Simple session middleware (used for auth state)
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'dev_secret',
+  resave: false,
+  saveUninitialized: false,
+  cookie: { maxAge: 24 * 60 * 60 * 1000 } // 1 day
+}));
 
 // ✅ ADDED: Serve static files from public folder (CSS, JS, Images, etc.)
 app.use(express.static(path.join(__dirname, 'public')));

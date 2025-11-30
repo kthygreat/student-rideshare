@@ -194,6 +194,53 @@
             color: #6c757d;
             line-height: 1.7;
         }
+        
+        /* Available Rides Section */
+        .rides-section {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            padding: 40px;
+            border-radius: 20px;
+            margin: 40px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            border: 1px solid rgba(255, 212, 59, 0.2);
+        }
+        .ride-card {
+            background: white;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 15px;
+            border-left: 4px solid #ffd43b;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        .ride-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        .ride-card h3 {
+            color: #495057;
+            margin-bottom: 10px;
+        }
+        .ride-card p {
+            color: #6c757d;
+            margin: 5px 0;
+        }
+        .btn-primary {
+            background: linear-gradient(45deg, #ffd43b, #ffc107);
+            color: #343a40;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 193, 7, 0.4);
+        }
+        
         .stats-section {
             background: linear-gradient(135deg, #495057 0%, #343a40 100%);
             padding: 80px 0;
@@ -278,6 +325,9 @@
             50% { transform: scale(1.05); }
             100% { transform: scale(1); }
         }
+        .hidden {
+            display: none !important;
+        }
         @media (max-width: 768px) {
             .nav {
                 flex-direction: column;
@@ -303,13 +353,16 @@
         <div class="container">
             <nav class="nav">
                 <div class="logo-container">
-                    <img src="/RideShareLogo.png" alt="Student Rideshare Logo" class="logo"> 
+                    <img src="RideShareLogo.png" alt="Student Rideshare Logo" class="logo"> 
                     <h1>Student Rideshare</h1>
                 </div>
                 <div class="nav-links">
-                        <a href="/login.html"><i class="fas fa-sign-in-alt"></i> Login</a>
-                    <a href="/register.html"><i class="fas fa-user-plus"></i> Register</a>
-                    <a href="/admin.html"><i class="fas fa-shield-alt"></i> Admin</a>
+                    <a href="login.html" id="nav-login"><i class="fas fa-sign-in-alt"></i> Login</a>
+                    <a href="register.html" id="nav-register"><i class="fas fa-user-plus"></i> Register</a>
+                    <a href="dashboard.html" id="nav-dashboard" class="hidden"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                    <a href="profile.html" id="nav-profile" class="hidden"><i class="fas fa-user"></i> My Profile</a>
+                    <a href="#" id="nav-signout" class="hidden"><i class="fas fa-sign-out-alt"></i> Sign Out</a>
+                    <a href="admin.html"><i class="fas fa-shield-alt"></i> Admin</a>
                 </div>
             </nav>
         </div>
@@ -320,12 +373,22 @@
             <h1><i class="fas fa-car-side"></i> Welcome to Student Rideshare</h1>
             <p>Connect with fellow students for safe, reliable, and affordable rides</p>
             <div style="margin-top: 40px;">
-                <a href="/register.html" class="btn pulse">
+                <a href="register.html" class="btn pulse">
                     <i class="fas fa-rocket"></i> Get Started
                 </a>
-                <a href="/login.html" class="btn btn-secondary">
+                <a href="login.html" class="btn btn-secondary">
                     <i class="fas fa-sign-in-alt"></i> Login
                 </a>
+            </div>
+        </section>
+
+        <!-- Available Rides Section -->
+        <section id="available-rides" class="rides-section fade-in">
+            <h2 style="text-align: center; margin-bottom: 30px; color: #495057;">
+                <i class="fas fa-car-side"></i> Available Rides
+            </h2>
+            <div id="rides-list">
+                <!-- Rides will be loaded here by JavaScript -->
             </div>
         </section>
 
@@ -337,7 +400,7 @@
                 <h3>For Drivers</h3>
                 <p>Offer rides to fellow students, share travel costs, and make your commute more affordable while helping others.</p>
                 <div style="margin-top: 20px;">
-                    <a href="/register.html" class="btn" style="padding: 10px 20px; font-size: 0.9rem;">
+                    <a href="register.html" class="btn" style="padding: 10px 20px; font-size: 0.9rem;">
                         <i class="fas fa-road"></i> Start Driving
                     </a>
                 </div>
@@ -349,7 +412,7 @@
                 <h3>For Riders</h3>
                 <p>Find reliable rides from trusted student drivers in your area. Safe, convenient, and budget-friendly transportation.</p>
                 <div style="margin-top: 20px;">
-                    <a href="/register.html" class="btn" style="padding: 10px 20px; font-size: 0.9rem;">
+                    <a href="register.html" class="btn" style="padding: 10px 20px; font-size: 0.9rem;">
                         <i class="fas fa-search"></i> Find Rides
                     </a>
                 </div>
@@ -361,7 +424,7 @@
                 <h3>Campus Community</h3>
                 <p>Connect exclusively with verified students from your university. Build trust within your campus network.</p>
                 <div style="margin-top: 20px;">
-                    <a href="/register.html" class="btn" style="padding: 10px 20px; font-size: 0.9rem;">
+                    <a href="register.html" class="btn" style="padding: 10px 20px; font-size: 0.9rem;">
                         <i class="fas fa-users"></i> Join Community
                     </a>
                 </div>
@@ -405,17 +468,17 @@
                 </div>
                 <div class="footer-section">
                     <h3>Quick Links</h3>
-                    <a href="/login.html"><i class="fas fa-arrow-right"></i> Login</a>
-                    <a href="/register.html"><i class="fas fa-arrow-right"></i> Register</a>
-                    <a href="/dashboard.html"><i class="fas fa-arrow-right"></i> Dashboard</a>
-                    <a href="/admin.html"><i class="fas fa-arrow-right"></i> Admin</a>
+                    <a href="login.html"><i class="fas fa-arrow-right"></i> Login</a>
+                    <a href="register.html"><i class="fas fa-arrow-right"></i> Register</a>
+                    <a href="dashboard.html"><i class="fas fa-arrow-right"></i> Dashboard</a>
+                    <a href="admin.html"><i class="fas fa-arrow-right"></i> Admin</a>
                 </div>
                 <div class="footer-section">
                     <h3>Support</h3>
-                        <a href="/help.html"><i class="fas fa-arrow-right"></i> Help Center</a>
-                        <a href="/safety.html"><i class="fas fa-arrow-right"></i> Safety Guidelines</a>
-                        <a href="/contact.html"><i class="fas fa-arrow-right"></i> Contact Us</a>
-                        <a href="/faq.html"><i class="fas fa-arrow-right"></i> FAQ</a>
+                    <a href="help.html"><i class="fas fa-arrow-right"></i> Help Center</a>
+                    <a href="safety.html"><i class="fas fa-arrow-right"></i> Safety Guidelines</a>
+                    <a href="contact.html"><i class="fas fa-arrow-right"></i> Contact Us</a>
+                    <a href="faq.html"><i class="fas fa-arrow-right"></i> FAQ</a>
                 </div>
             </div>
             <div class="copyright">
@@ -425,6 +488,134 @@
     </footer>
 
     <script>
+        // Enhanced available rides loader
+        async function loadAvailableRides() {
+            try {
+                const response = await fetch('/api/rides/available');
+                const data = await response.json();
+                const rides = data.data || data || [];
+                const ridesList = document.getElementById('rides-list');
+                
+                if (!ridesList) return;
+
+                if (!rides.length) {
+                    ridesList.innerHTML = `
+                        <div style="text-align: center; padding: 40px; color: #6c757d;">
+                            <i class="fas fa-car" style="font-size: 3rem; margin-bottom: 20px; opacity: 0.5;"></i>
+                            <h3>No rides available at the moment</h3>
+                            <p>Check back later or create your own ride offer!</p>
+                            <a href="register.html" class="btn" style="margin-top: 20px;">
+                                <i class="fas fa-plus"></i> Create Ride Offer
+                            </a>
+                        </div>
+                    `;
+                    return;
+                }
+
+                ridesList.innerHTML = rides.map(ride => `
+                    <div class="ride-card">
+                        <h3>${ride.startLocation} → ${ride.destination}</h3>
+                        <p><strong>Date:</strong> ${new Date(ride.dateTime).toLocaleString()}</p>
+                        <p><strong>Seats Available:</strong> ${ride.availableSeats}</p>
+                        <p><strong>Price:</strong> $${ride.price}</p>
+                        ${ride.notes ? `<p><strong>Notes:</strong> ${ride.notes}</p>` : ''}
+                        <button onclick="bookRide('${ride._id}')" class="btn-primary">
+                            <i class="fas fa-calendar-plus"></i> Book This Ride
+                        </button>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading available rides:', error);
+                document.getElementById('rides-list').innerHTML = `
+                    <div style="text-align: center; padding: 20px; color: #dc3545;">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p>Unable to load rides at the moment. Please try again later.</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Book ride function
+        async function bookRide(rideId) {
+            // Check if user is logged in
+            try {
+                const profileResponse = await fetch('/api/auth/profile');
+                if (!profileResponse.ok) {
+                    if (confirm('You need to login to book a ride. Would you like to login now?')) {
+                        window.location.href = 'login.html';
+                    }
+                    return;
+                }
+
+                const user = await profileResponse.json();
+                const seats = prompt('How many seats would you like to book?', '1');
+                
+                if (seats && parseInt(seats) > 0) {
+                    const bookingData = {
+                        rideId: rideId,
+                        numberOfSeats: parseInt(seats)
+                    };
+
+                    const response = await fetch('/api/bookings', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(bookingData)
+                    });
+                    
+                    if (response.ok) {
+                        alert('Booking created successfully!');
+                        window.location.href = 'dashboard.html';
+                    } else {
+                        const error = await response.json();
+                        alert('Error: ' + (error.message || 'Failed to create booking'));
+                    }
+                }
+            } catch (error) {
+                console.error('Error creating booking:', error);
+                alert('Error creating booking. Please try again.');
+            }
+        }
+
+        // Navigation authentication check
+        async function updateNavigation() {
+            try {
+                const response = await fetch('/api/auth/profile');
+                if (response.ok) {
+                    const user = await response.json();
+                    // User is logged in
+                    document.getElementById('nav-login').classList.add('hidden');
+                    document.getElementById('nav-register').classList.add('hidden');
+                    document.getElementById('nav-dashboard').classList.remove('hidden');
+                    document.getElementById('nav-profile').classList.remove('hidden');
+                    document.getElementById('nav-signout').classList.remove('hidden');
+                } else {
+                    // User is not logged in
+                    document.getElementById('nav-login').classList.remove('hidden');
+                    document.getElementById('nav-register').classList.remove('hidden');
+                    document.getElementById('nav-dashboard').classList.add('hidden');
+                    document.getElementById('nav-profile').classList.add('hidden');
+                    document.getElementById('nav-signout').classList.add('hidden');
+                }
+            } catch (error) {
+                console.error('Error checking auth status:', error);
+            }
+        }
+
+        // Sign out handler
+        document.getElementById('nav-signout')?.addEventListener('click', function(e) {
+            e.preventDefault();
+            if (confirm('Are you sure you want to logout?')) {
+                fetch('/api/auth/logout', { method: 'POST' })
+                    .then(() => {
+                        window.location.href = 'index.html';
+                    })
+                    .catch(error => {
+                        console.error('Logout error:', error);
+                        window.location.href = 'index.html';
+                    });
+            }
+        });
+
         // Animate stats counting up
         function animateStats() {
             animateCounter('studentsCount', 12500, 2000);
@@ -433,7 +624,6 @@
             animateCounter('savingsCount', 250, 2000);
         }
 
-        // Animate number counting
         function animateCounter(elementId, target, duration) {
             const element = document.getElementById(elementId);
             let start = 0;
@@ -451,56 +641,10 @@
             }, 16);
         }
 
-        // Test connection to backend
-        fetch('/api/auth')
-            .then(response => response.json())
-            .then(data => {
-                console.log('Backend connection successful:', data);
-                showNotification('Connected to server successfully!', 'success');
-            })
-            .catch(error => {
-                console.log('Backend connection test - this is normal during development');
-            });
-
-        // Enhanced notification system
-        function showNotification(message, type = 'info') {
-            // Create notification element
-            const notification = document.createElement('div');
-            notification.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                padding: 15px 20px;
-                background: ${type === 'success' ? '#28a745' : type === 'error' ? '#dc3545' : '#007bff'};
-                color: white;
-                border-radius: 10px;
-                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-                z-index: 1000;
-                transform: translateX(100%);
-                transition: transform 0.3s ease;
-                max-width: 300px;
-            `;
-            notification.innerHTML = `
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-triangle' : 'info-circle'}"></i>
-                    <span>${message}</span>
-                </div>
-            `;
-            
-            document.body.appendChild(notification);
-            
-            // Animate in
-            setTimeout(() => notification.style.transform = 'translateX(0)', 100);
-            
-            // Remove after 3 seconds
-            setTimeout(() => {
-                notification.style.transform = 'translateX(100%)';
-                setTimeout(() => notification.remove(), 300);
-            }, 3000);
-        }
-
-        // Initialize animations when page loads
+        // Initialize everything when page loads
         document.addEventListener('DOMContentLoaded', function() {
+            loadAvailableRides();
+            updateNavigation();
             setTimeout(() => {
                 animateStats();
             }, 1000);

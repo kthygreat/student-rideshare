@@ -97,12 +97,6 @@
             text-align: center;
             box-shadow: 0 10px 30px rgba(0,0,0,0.08);
             border: 1px solid rgba(255, 212, 59, 0.2);
-            transform: translateY(0);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .welcome-section:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
         }
         .welcome-section h2 {
             font-size: 2.5rem;
@@ -111,12 +105,6 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-        }
-        .welcome-section p {
-            font-size: 1.2rem;
-            color: #6c757d;
-            max-width: 600px;
-            margin: 0 auto;
         }
         .dashboard-grid {
             display: grid;
@@ -130,22 +118,6 @@
             border-radius: 20px;
             box-shadow: 0 8px 25px rgba(0,0,0,0.08);
             border: 1px solid rgba(255, 212, 59, 0.1);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(45deg, #ffd43b, #ffc107);
-        }
-        .card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
         }
         .card h3 {
             font-size: 1.5rem;
@@ -161,10 +133,6 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-        .card p {
-            color: #6c757d;
-            margin-bottom: 20px;
-        }
         .btn {
             display: inline-flex;
             align-items: center;
@@ -179,30 +147,19 @@
             margin: 5px;
             font-weight: 600;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
         .btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-            background: linear-gradient(45deg, #343a40, #495057);
         }
         .btn-primary {
             background: linear-gradient(45deg, #ffd43b, #ffc107);
             color: #343a40;
         }
-        .btn-primary:hover {
-            background: linear-gradient(45deg, #ffc107, #ffd43b);
-            box-shadow: 0 8px 25px rgba(255, 193, 7, 0.4);
-        }
         .btn-secondary {
             background: linear-gradient(45deg, #6c757d, #adb5bd);
         }
-        .btn-secondary:hover {
-            background: linear-gradient(45deg, #5a6268, #6c757d);
-            box-shadow: 0 8px 25px rgba(108, 117, 125, 0.4);
-        }
-        .user-info {
-            margin: 20px 0;
+        .btn-danger {
+            background: linear-gradient(45deg, #dc3545, #c82333);
         }
         .stats {
             display: grid;
@@ -216,52 +173,63 @@
             border-radius: 15px;
             text-align: center;
             box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-            border: 1px solid rgba(255, 212, 59, 0.1);
-            transition: all 0.3s ease;
-        }
-        .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.12);
         }
         .stat-number {
             font-size: 2.5rem;
             font-weight: 800;
             color: #343a40;
             margin-bottom: 10px;
-            transition: all 0.3s ease;
         }
-        .stat-card:hover .stat-number {
-            color: #ffc107;
-            transform: scale(1.1);
-        }
-        .feature-panel {
-            display: none;
+        
+        /* CRUD Section Styles */
+        .crud-section {
             margin-top: 20px;
-            padding: 25px;
+            padding: 20px;
             background: rgba(255, 212, 59, 0.05);
             border-radius: 15px;
             border: 1px solid rgba(255, 212, 59, 0.2);
-            animation: fadeIn 0.5s ease;
         }
-        .fade-in {
-            animation: fadeIn 0.8s ease-in-out;
+        .rides-list, .bookings-list {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-top: 15px;
         }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        .ride-item, .booking-item {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+            border-left: 4px solid #ffd43b;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
-        .pulse {
-            animation: pulse 2s infinite;
+        .ride-actions, .booking-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
         }
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        .hidden {
+            display: none;
         }
         .loading {
             opacity: 0.7;
             pointer-events: none;
         }
+        
         @media (max-width: 768px) {
             .nav {
                 flex-direction: column;
@@ -274,9 +242,6 @@
             .container {
                 padding: 0 20px;
             }
-            .stats {
-                grid-template-columns: repeat(2, 1fr);
-            }
         }
     </style>
 </head>
@@ -284,246 +249,429 @@
     <header class="header">
         <nav class="nav">
             <div class="logo-container">
-                <img src="/assets/RideShareLogo.png" alt="Student Rideshare Logo" class="logo">
+                <img src="RideShareLogo.png" alt="Student Rideshare Logo" class="logo">
                 <h1>Student Rideshare</h1>
             </div>
             <div class="nav-links">
-                <span class="user-badge" id="userWelcome"><i class="fas fa-user-graduate"></i> Welcome, Student!</span>
-                <a href="/index.html"><i class="fas fa-home"></i> Home</a>
+                <span class="user-badge" id="userWelcome"><i class="fas fa-user-graduate"></i> Welcome!</span>
+                <a href="index.html"><i class="fas fa-home"></i> Home</a>
                 <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
             </div>
         </nav>
     </header>
 
     <div class="container">
-        <div class="welcome-section fade-in">
+        <div class="welcome-section">
             <h2><i class="fas fa-tachometer-alt"></i> Student Dashboard</h2>
             <div class="user-info">
-                <p>Manage your rides and connect with fellow students</p>
+                <p id="userInfo">Manage your rides and connect with fellow students</p>
             </div>
         </div>
 
         <div class="dashboard-grid">
-            <!-- Driver Panel -->
-            <div class="card fade-in" style="animation-delay: 0.1s;">
-                <h3><i class="fas fa-car"></i> Driver Panel</h3>
-                <p>Offer rides to other students and earn while you drive</p>
+            <!-- My Rides Panel -->
+            <div class="card">
+                <h3><i class="fas fa-car"></i> My Rides</h3>
+                <p>Manage rides you're offering to other students</p>
+                
                 <div style="margin-top: 20px;">
-                    <button class="btn btn-primary" onclick="showDriverFeatures()">
-                        <i class="fas fa-plus-circle"></i> Create Ride Offer
+                    <button class="btn btn-primary" onclick="showCreateRideForm()">
+                        <i class="fas fa-plus-circle"></i> Create New Ride
                     </button>
-                    <button class="btn btn-secondary" onclick="showDriverFeatures()">
-                        <i class="fas fa-road"></i> My Rides
+                    <button class="btn btn-secondary" onclick="loadMyRides()">
+                        <i class="fas fa-sync-alt"></i> Refresh Rides
                     </button>
                 </div>
-                <div id="driverFeatures" class="feature-panel">
-                    <h4><i class="fas fa-car-side"></i> Driver Features</h4>
-                    <p>Create ride offers, manage your schedule, and track your earnings.</p>
-                    <div style="margin-top: 15px;">
-                        <button class="btn btn-primary">
-                            <i class="fas fa-map-marker-alt"></i> Set Route
-                        </button>
-                        <button class="btn">
-                            <i class="fas fa-clock"></i> Schedule Ride
-                        </button>
+
+                <!-- Create Ride Form -->
+                <div id="createRideForm" class="crud-section hidden">
+                    <h4><i class="fas fa-road"></i> Create New Ride</h4>
+                    <form id="rideForm" onsubmit="createRide(event)">
+                        <div class="form-group">
+                            <label for="startLocation">Start Location:</label>
+                            <input type="text" id="startLocation" required placeholder="e.g., Centennial College">
+                        </div>
+                        <div class="form-group">
+                            <label for="destination">Destination:</label>
+                            <input type="text" id="destination" required placeholder="e.g., Scarborough Town Centre">
+                        </div>
+                        <div class="form-group">
+                            <label for="dateTime">Date & Time:</label>
+                            <input type="datetime-local" id="dateTime" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="availableSeats">Available Seats:</label>
+                            <input type="number" id="availableSeats" min="1" max="8" value="1" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="price">Price per seat ($):</label>
+                            <input type="number" id="price" min="0" step="0.5" value="5" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="notes">Additional Notes:</label>
+                            <textarea id="notes" placeholder="Any additional information..."></textarea>
+                        </div>
+                        <div class="ride-actions">
+                            <button type="submit" class="btn btn-primary">Create Ride</button>
+                            <button type="button" class="btn btn-secondary" onclick="hideCreateRideForm()">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- My Rides List -->
+                <div class="crud-section">
+                    <h4><i class="fas fa-list"></i> My Ride Offers</h4>
+                    <div id="myRidesList" class="rides-list">
+                        <!-- Rides will be loaded here -->
                     </div>
                 </div>
             </div>
 
-            <!-- Rider Panel -->
-            <div class="card fade-in" style="animation-delay: 0.2s;">
-                <h3><i class="fas fa-user-friends"></i> Rider Panel</h3>
-                <p>Find rides from student drivers in your area</p>
+            <!-- My Bookings Panel -->
+            <div class="card">
+                <h3><i class="fas fa-user-friends"></i> My Bookings</h3>
+                <p>Manage rides you've booked as a passenger</p>
+                
                 <div style="margin-top: 20px;">
-                    <button class="btn btn-primary" onclick="showRiderFeatures()">
+                    <button class="btn btn-primary" onclick="loadAvailableRides()">
                         <i class="fas fa-search"></i> Find Rides
                     </button>
-                    <button class="btn btn-secondary" onclick="showRiderFeatures()">
-                        <i class="fas fa-calendar-check"></i> My Bookings
+                    <button class="btn btn-secondary" onclick="loadMyBookings()">
+                        <i class="fas fa-sync-alt"></i> Refresh Bookings
                     </button>
                 </div>
-                <div id="riderFeatures" class="feature-panel">
-                    <h4><i class="fas fa-user-check"></i> Rider Features</h4>
-                    <p>Browse available rides, book your seat, and manage your bookings.</p>
-                    <div style="margin-top: 15px;">
-                        <button class="btn btn-primary">
-                            <i class="fas fa-search-location"></i> Browse Rides
-                        </button>
-                        <button class="btn">
-                            <i class="fas fa-history"></i> Ride History
-                        </button>
+
+                <!-- Available Rides -->
+                <div id="availableRidesSection" class="crud-section hidden">
+                    <h4><i class="fas fa-car-side"></i> Available Rides</h4>
+                    <div id="availableRidesList" class="rides-list">
+                        <!-- Available rides will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- My Bookings List -->
+                <div class="crud-section">
+                    <h4><i class="fas fa-calendar-check"></i> My Bookings</h4>
+                    <div id="myBookingsList" class="bookings-list">
+                        <!-- Bookings will be loaded here -->
                     </div>
                 </div>
             </div>
 
-            <!-- Profile Panel -->
-            <div class="card fade-in" style="animation-delay: 0.3s;">
-                <h3><i class="fas fa-user-circle"></i> My Profile</h3>
-                <p>Manage your account information and preferences</p>
-                <div style="margin-top: 20px;">
-                    <button class="btn btn-primary" onclick="showProfile()">
-                        <i class="fas fa-eye"></i> View Profile
-                    </button>
-                    <button class="btn btn-secondary" onclick="showProfile()">
-                        <i class="fas fa-edit"></i> Edit Profile
-                    </button>
-                </div>
-                <div id="profileInfo" class="feature-panel">
-                    <h4><i class="fas fa-user-cog"></i> Profile Management</h4>
-                    <p>Update your personal information, vehicle details, and preferences.</p>
-                    <div style="margin-top: 15px;">
-                        <button class="btn btn-primary">
-                            <i class="fas fa-id-card"></i> Personal Info
-                        </button>
-                        <button class="btn">
-                            <i class="fas fa-car"></i> Vehicle Details
-                        </button>
+            <!-- Quick Stats -->
+            <div class="card">
+                <h3><i class="fas fa-chart-bar"></i> Quick Stats</h3>
+                <div class="stats">
+                    <div class="stat-card">
+                        <div class="stat-number" id="availableRidesCount">0</div>
+                        <div>Available Rides</div>
                     </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Quick Stats -->
-        <div class="card fade-in" style="animation-delay: 0.4s;">
-            <h3><i class="fas fa-chart-bar"></i> Quick Stats</h3>
-            <div class="stats">
-                <div class="stat-card">
-                    <div class="stat-number" id="availableRides">0</div>
-                    <div>Available Rides</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="myBookings">0</div>
-                    <div>My Bookings</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="ridesGiven">0</div>
-                    <div>Rides Given</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="studentCount">0</div>
-                    <div>Students Registered</div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="myBookingsCount">0</div>
+                        <div>My Bookings</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="myRidesCount">0</div>
+                        <div>My Rides</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalStudents">156</div>
+                        <div>Students Registered</div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Enhanced demo functions with animations
-        function showDriverFeatures() {
-            const driverFeatures = document.getElementById('driverFeatures');
-            const isVisible = driverFeatures.style.display === 'block';
-            
-            if (!isVisible) {
-                driverFeatures.style.display = 'block';
-                showNotification('Driver panel expanded', 'info');
-            } else {
-                driverFeatures.style.display = 'none';
+        // Load user data and initialize dashboard
+        async function loadDashboardData() {
+            try {
+                const response = await fetch('/api/auth/profile');
+                if (response.ok) {
+                    const user = await response.json();
+                    document.getElementById('userWelcome').innerHTML = `<i class="fas fa-user-graduate"></i> Welcome, ${user.username || user.email}!`;
+                    document.getElementById('userInfo').textContent = `Welcome back, ${user.username || user.email}! Manage your rides and bookings below.`;
+                    
+                    // Load initial data
+                    loadMyRides();
+                    loadMyBookings();
+                    updateStats();
+                } else {
+                    window.location.href = 'login.html';
+                }
+            } catch (error) {
+                console.error('Error loading dashboard:', error);
+                window.location.href = 'login.html';
             }
         }
 
-        function showRiderFeatures() {
-            const riderFeatures = document.getElementById('riderFeatures');
-            const isVisible = riderFeatures.style.display === 'block';
+        // Ride CRUD Operations
+        function showCreateRideForm() {
+            document.getElementById('createRideForm').classList.remove('hidden');
+            // Set minimum datetime to current time
+            document.getElementById('dateTime').min = new Date().toISOString().slice(0, 16);
+        }
+
+        function hideCreateRideForm() {
+            document.getElementById('createRideForm').classList.add('hidden');
+            document.getElementById('rideForm').reset();
+        }
+
+        async function createRide(event) {
+            event.preventDefault();
             
-            if (!isVisible) {
-                riderFeatures.style.display = 'block';
-                showNotification('Rider panel expanded', 'info');
-            } else {
-                riderFeatures.style.display = 'none';
+            const rideData = {
+                startLocation: document.getElementById('startLocation').value,
+                destination: document.getElementById('destination').value,
+                dateTime: document.getElementById('dateTime').value,
+                availableSeats: parseInt(document.getElementById('availableSeats').value),
+                price: parseFloat(document.getElementById('price').value),
+                notes: document.getElementById('notes').value
+            };
+
+            try {
+                const response = await fetch('/api/rides', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(rideData)
+                });
+
+                if (response.ok) {
+                    alert('Ride created successfully!');
+                    hideCreateRideForm();
+                    loadMyRides();
+                    updateStats();
+                } else {
+                    const error = await response.json();
+                    alert('Error: ' + (error.message || 'Failed to create ride'));
+                }
+            } catch (error) {
+                console.error('Error creating ride:', error);
+                alert('Error creating ride. Please try again.');
             }
         }
 
-        function showProfile() {
-            const profileInfo = document.getElementById('profileInfo');
-            const isVisible = profileInfo.style.display === 'block';
-            
-            if (!isVisible) {
-                profileInfo.style.display = 'block';
-                showNotification('Profile panel expanded', 'info');
-            } else {
-                profileInfo.style.display = 'none';
+        async function loadMyRides() {
+            try {
+                const response = await fetch('/api/rides/my-rides');
+                const rides = await response.json();
+                const ridesList = document.getElementById('myRidesList');
+                
+                if (!rides.length) {
+                    ridesList.innerHTML = '<p>You haven\'t created any rides yet.</p>';
+                    document.getElementById('myRidesCount').textContent = '0';
+                    return;
+                }
+
+                ridesList.innerHTML = rides.map(ride => `
+                    <div class="ride-item">
+                        <h4>${ride.startLocation} → ${ride.destination}</h4>
+                        <p><strong>Date:</strong> ${new Date(ride.dateTime).toLocaleString()}</p>
+                        <p><strong>Seats:</strong> ${ride.availableSeats} | <strong>Price:</strong> $${ride.price}</p>
+                        ${ride.notes ? `<p><strong>Notes:</strong> ${ride.notes}</p>` : ''}
+                        <div class="ride-actions">
+                            <button class="btn btn-secondary" onclick="editRide('${ride._id}')">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button class="btn btn-danger" onclick="deleteRide('${ride._id}')">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+
+                document.getElementById('myRidesCount').textContent = rides.length;
+            } catch (error) {
+                console.error('Error loading my rides:', error);
+                document.getElementById('myRidesList').innerHTML = '<p>Error loading rides. Please try again.</p>';
             }
         }
 
-        // Enhanced notification system
-        function showNotification(message, type = 'info') {
-            // Create notification element
-            const notification = document.createElement('div');
-            notification.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                padding: 15px 20px;
-                background: ${type === 'success' ? '#28a745' : type === 'error' ? '#dc3545' : '#007bff'};
-                color: white;
-                border-radius: 10px;
-                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-                z-index: 1000;
-                transform: translateX(100%);
-                transition: transform 0.3s ease;
-                max-width: 300px;
-            `;
-            notification.innerHTML = `
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-triangle' : 'info-circle'}"></i>
-                    <span>${message}</span>
-                </div>
-            `;
+        async function deleteRide(rideId) {
+            if (confirm('Are you sure you want to delete this ride?')) {
+                try {
+                    const response = await fetch(`/api/rides/${rideId}`, {
+                        method: 'DELETE'
+                    });
+                    
+                    if (response.ok) {
+                        alert('Ride deleted successfully!');
+                        loadMyRides();
+                        updateStats();
+                    } else {
+                        alert('Error deleting ride');
+                    }
+                } catch (error) {
+                    console.error('Error deleting ride:', error);
+                    alert('Error deleting ride. Please try again.');
+                }
+            }
+        }
+
+        // Booking Operations
+        async function loadMyBookings() {
+            try {
+                const response = await fetch('/api/bookings/my-bookings');
+                const bookings = await response.json();
+                const bookingsList = document.getElementById('myBookingsList');
+                
+                if (!bookings.length) {
+                    bookingsList.innerHTML = '<p>You haven\'t made any bookings yet.</p>';
+                    document.getElementById('myBookingsCount').textContent = '0';
+                    return;
+                }
+
+                bookingsList.innerHTML = bookings.map(booking => `
+                    <div class="booking-item">
+                        <h4>Ride to ${booking.rideId?.destination || 'Unknown'}</h4>
+                        <p><strong>From:</strong> ${booking.rideId?.startLocation || 'Unknown'}</p>
+                        <p><strong>Date:</strong> ${new Date(booking.rideId?.dateTime).toLocaleString()}</p>
+                        <p><strong>Status:</strong> ${booking.status}</p>
+                        <p><strong>Seats Booked:</strong> ${booking.numberOfSeats}</p>
+                        <div class="booking-actions">
+                            <button class="btn btn-danger" onclick="cancelBooking('${booking._id}')" 
+                                    ${booking.status !== 'confirmed' ? 'disabled' : ''}>
+                                <i class="fas fa-times"></i> Cancel Booking
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+
+                document.getElementById('myBookingsCount').textContent = bookings.length;
+            } catch (error) {
+                console.error('Error loading my bookings:', error);
+                document.getElementById('myBookingsList').innerHTML = '<p>Error loading bookings. Please try again.</p>';
+            }
+        }
+
+        async function loadAvailableRides() {
+            try {
+                const section = document.getElementById('availableRidesSection');
+                section.classList.toggle('hidden');
+                
+                if (section.classList.contains('hidden')) return;
+
+                const response = await fetch('/api/rides/available');
+                const rides = await response.json();
+                const ridesList = document.getElementById('availableRidesList');
+                
+                if (!rides.length) {
+                    ridesList.innerHTML = '<p>No rides available at the moment.</p>';
+                    return;
+                }
+
+                ridesList.innerHTML = rides.map(ride => `
+                    <div class="ride-item">
+                        <h4>${ride.startLocation} → ${ride.destination}</h4>
+                        <p><strong>Date:</strong> ${new Date(ride.dateTime).toLocaleString()}</p>
+                        <p><strong>Seats Available:</strong> ${ride.availableSeats}</p>
+                        <p><strong>Price:</strong> $${ride.price}</p>
+                        ${ride.notes ? `<p><strong>Notes:</strong> ${ride.notes}</p>` : ''}
+                        <div class="ride-actions">
+                            <button class="btn btn-primary" onclick="bookRide('${ride._id}')">
+                                <i class="fas fa-calendar-plus"></i> Book Ride
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+
+                document.getElementById('availableRidesCount').textContent = rides.length;
+            } catch (error) {
+                console.error('Error loading available rides:', error);
+            }
+        }
+
+        async function bookRide(rideId) {
+            const seats = prompt('How many seats would you like to book?', '1');
             
-            document.body.appendChild(notification);
-            
-            // Animate in
-            setTimeout(() => notification.style.transform = 'translateX(0)', 100);
-            
-            // Remove after 3 seconds
+            if (seats && parseInt(seats) > 0) {
+                try {
+                    const bookingData = {
+                        rideId: rideId,
+                        numberOfSeats: parseInt(seats)
+                    };
+
+                    const response = await fetch('/api/bookings', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(bookingData)
+                    });
+                    
+                    if (response.ok) {
+                        alert('Booking created successfully!');
+                        loadMyBookings();
+                        updateStats();
+                    } else {
+                        const error = await response.json();
+                        alert('Error: ' + (error.message || 'Failed to create booking'));
+                    }
+                } catch (error) {
+                    console.error('Error creating booking:', error);
+                    alert('Error creating booking. Please try again.');
+                }
+            }
+        }
+
+        async function cancelBooking(bookingId) {
+            if (confirm('Are you sure you want to cancel this booking?')) {
+                try {
+                    const response = await fetch(`/api/bookings/${bookingId}/status`, {
+                        method: 'PATCH',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ status: 'cancelled' })
+                    });
+                    
+                    if (response.ok) {
+                        alert('Booking cancelled successfully!');
+                        loadMyBookings();
+                        updateStats();
+                    } else {
+                        alert('Error cancelling booking');
+                    }
+                } catch (error) {
+                    console.error('Error cancelling booking:', error);
+                    alert('Error cancelling booking. Please try again.');
+                }
+            }
+        }
+
+        // Stats and utilities
+        async function updateStats() {
+            // This would typically fetch real stats from your API
+            // For now, we'll update based on loaded data
             setTimeout(() => {
-                notification.style.transform = 'translateX(100%)';
-                setTimeout(() => notification.remove(), 300);
-            }, 3000);
+                const myRides = document.querySelectorAll('.ride-item').length;
+                const myBookings = document.querySelectorAll('.booking-item').length;
+                
+                document.getElementById('myRidesCount').textContent = myRides;
+                document.getElementById('myBookingsCount').textContent = myBookings;
+            }, 500);
         }
 
-        // Enhanced logout handler
+        // Logout handler
         document.getElementById('logoutBtn').addEventListener('click', function(e) {
             e.preventDefault();
             if (confirm('Are you sure you want to logout?')) {
-                showNotification('Logging out...', 'info');
-                setTimeout(() => {
-                    window.location.href = '/index.html';
-                }, 1000);
+                fetch('/api/auth/logout', { method: 'POST' })
+                    .then(() => {
+                        window.location.href = 'index.html';
+                    })
+                    .catch(error => {
+                        console.error('Logout error:', error);
+                        window.location.href = 'index.html';
+                    });
             }
         });
 
-        // Animate stats counting up
-        function animateStats() {
-            animateCounter('availableRides', 12, 1500);
-            animateCounter('myBookings', 3, 1500);
-            animateCounter('ridesGiven', 8, 1500);
-            animateCounter('studentCount', 156, 1500);
+        // Edit ride function (placeholder - would need edit-ride.html page)
+        function editRide(rideId) {
+            alert('Edit functionality would open an edit form for ride: ' + rideId);
+            // window.location.href = `edit-ride.html?id=${rideId}`;
         }
 
-        // Animate number counting
-        function animateCounter(elementId, target, duration) {
-            const element = document.getElementById(elementId);
-            let start = 0;
-            const increment = target / (duration / 16);
-            
-            const timer = setInterval(() => {
-                start += increment;
-                if (start >= target) {
-                    element.textContent = target;
-                    clearInterval(timer);
-                } else {
-                    element.textContent = Math.floor(start);
-                }
-            }, 16);
-        }
-
-        // Initialize dashboard with enhanced effects
-        document.addEventListener('DOMContentLoaded', function() {
-            setTimeout(() => {
-                animateStats();
-            }, 500);
-        });
+        // Initialize dashboard when page loads
+        document.addEventListener('DOMContentLoaded', loadDashboardData);
     </script>
 </body>
 </html>

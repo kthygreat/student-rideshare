@@ -74,7 +74,15 @@ router.post('/login', async (req, res) => {
         error: 'Invalid credentials'
       });
     }
-    
+    // Set session user id
+    try {
+      req.session.userId = user._id.toString();
+      req.session.username = user.username;
+    } catch (e) {
+      // sessions may not be available in some dev setups
+      console.warn('Session not available:', e.message);
+    }
+
     res.json({
       success: true,
       message: 'Login successful',
@@ -95,3 +103,32 @@ router.post('/login', async (req, res) => {
 });
 
 module.exports = router;
+
+// GET /api/auth/profile - current logged in user (session)
+router.get('/profile', async (req, res) => {
+  try {
+    if (!req.session || !req.session.userId) {
+      return res.status(401).json({ success: false, message: 'Not authenticated' });
+    }
+
+    const user = await User.findById(req.session.userId).select('-password');
+    if (!user) return res.status(404).json({ success: false, message: 'User not found' });
+
+    res.json({ success: true, user });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// POST /api/auth/logout
+router.post('/logout', (req, res) => {
+  if (req.session) {
+    req.session.destroy(err => {
+      if (err) return res.status(500).json({ success: false, message: 'Logout failed' });
+      res.clearCookie('connect.sid');
+      return res.json({ success: true, message: 'Logged out' });
+    });
+  } else {
+    res.json({ success: true, message: 'No active session' });
+  }
+});

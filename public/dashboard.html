@@ -389,9 +389,12 @@
             try {
                 const response = await fetch('/api/auth/profile');
                 if (response.ok) {
-                    const user = await response.json();
-                    document.getElementById('userWelcome').innerHTML = `<i class="fas fa-user-graduate"></i> Welcome, ${user.username || user.email}!`;
-                    document.getElementById('userInfo').textContent = `Welcome back, ${user.username || user.email}! Manage your rides and bookings below.`;
+                    const data = await response.json();
+                    const user = data.user || data; // Handle both response formats
+                    
+                    // Use username (which exists in your API response)
+                    document.getElementById('userWelcome').innerHTML = `<i class="fas fa-user-graduate"></i> Welcome, ${user.username}!`;
+                    document.getElementById('userInfo').textContent = `Welcome back, ${user.username}! Manage your rides and bookings below.`;
                     
                     // Load initial data
                     loadMyRides();

@@ -390,13 +390,11 @@
                 const response = await fetch('/api/auth/profile');
                 if (response.ok) {
                     const data = await response.json();
-                    const user = data.user || data; // Handle both response formats
+                    const user = data.user || data;
                     
-                    // Use username (which exists in your API response)
                     document.getElementById('userWelcome').innerHTML = `<i class="fas fa-user-graduate"></i> Welcome, ${user.username}!`;
                     document.getElementById('userInfo').textContent = `Welcome back, ${user.username}! Manage your rides and bookings below.`;
                     
-                    // Load initial data
                     loadMyRides();
                     loadMyBookings();
                     updateStats();
@@ -412,7 +410,6 @@
         // Ride CRUD Operations
         function showCreateRideForm() {
             document.getElementById('createRideForm').classList.remove('hidden');
-            // Set minimum datetime to current time
             document.getElementById('dateTime').min = new Date().toISOString().slice(0, 16);
         }
 
@@ -425,9 +422,9 @@
             event.preventDefault();
             
             const rideData = {
-                startLocation: document.getElementById('startLocation').value,
-                destination: document.getElementById('destination').value,
-                dateTime: document.getElementById('dateTime').value,
+                from: document.getElementById('startLocation').value,
+                to: document.getElementById('destination').value,
+                departureTime: document.getElementById('dateTime').value,
                 availableSeats: parseInt(document.getElementById('availableSeats').value),
                 price: parseFloat(document.getElementById('price').value),
                 notes: document.getElementById('notes').value
@@ -447,7 +444,7 @@
                     updateStats();
                 } else {
                     const error = await response.json();
-                    alert('Error: ' + (error.message || 'Failed to create ride'));
+                    alert('Error: ' + (error.error || error.message || 'Failed to create ride'));
                 }
             } catch (error) {
                 console.error('Error creating ride:', error);
@@ -458,10 +455,11 @@
         async function loadMyRides() {
             try {
                 const response = await fetch('/api/rides/my-rides');
-                const rides = await response.json();
+                const data = await response.json();
+                const rides = data.data || data;
                 const ridesList = document.getElementById('myRidesList');
                 
-                if (!rides.length) {
+                if (!rides || rides.length === 0) {
                     ridesList.innerHTML = '<p>You haven\'t created any rides yet.</p>';
                     document.getElementById('myRidesCount').textContent = '0';
                     return;
@@ -469,8 +467,8 @@
 
                 ridesList.innerHTML = rides.map(ride => `
                     <div class="ride-item">
-                        <h4>${ride.startLocation} → ${ride.destination}</h4>
-                        <p><strong>Date:</strong> ${new Date(ride.dateTime).toLocaleString()}</p>
+                        <h4>${ride.from} → ${ride.to}</h4>
+                        <p><strong>Date:</strong> ${new Date(ride.departureTime).toLocaleString()}</p>
                         <p><strong>Seats:</strong> ${ride.availableSeats} | <strong>Price:</strong> $${ride.price}</p>
                         ${ride.notes ? `<p><strong>Notes:</strong> ${ride.notes}</p>` : ''}
                         <div class="ride-actions">
@@ -512,14 +510,14 @@
             }
         }
 
-        // Booking Operations
         async function loadMyBookings() {
             try {
                 const response = await fetch('/api/bookings/my-bookings');
-                const bookings = await response.json();
+                const data = await response.json();
+                const bookings = data.data || data;
                 const bookingsList = document.getElementById('myBookingsList');
                 
-                if (!bookings.length) {
+                if (!bookings || bookings.length === 0) {
                     bookingsList.innerHTML = '<p>You haven\'t made any bookings yet.</p>';
                     document.getElementById('myBookingsCount').textContent = '0';
                     return;
@@ -527,14 +525,15 @@
 
                 bookingsList.innerHTML = bookings.map(booking => `
                     <div class="booking-item">
-                        <h4>Ride to ${booking.rideId?.destination || 'Unknown'}</h4>
-                        <p><strong>From:</strong> ${booking.rideId?.startLocation || 'Unknown'}</p>
-                        <p><strong>Date:</strong> ${new Date(booking.rideId?.dateTime).toLocaleString()}</p>
+                        <h4>Ride to ${booking.rideId?.to || 'Unknown'}</h4>
+                        <p><strong>From:</strong> ${booking.rideId?.from || 'Unknown'}</p>
+                        <p><strong>Date:</strong> ${new Date(booking.rideId?.departureTime).toLocaleString()}</p>
                         <p><strong>Status:</strong> ${booking.status}</p>
-                        <p><strong>Seats Booked:</strong> ${booking.numberOfSeats}</p>
+                        <p><strong>Seats Booked:</strong> ${booking.seats}</p>
+                        <p><strong>Total Price:</strong> $${booking.totalPrice}</p>
                         <div class="booking-actions">
                             <button class="btn btn-danger" onclick="cancelBooking('${booking._id}')" 
-                                    ${booking.status !== 'confirmed' ? 'disabled' : ''}>
+                                    ${booking.status !== 'confirmed' && booking.status !== 'pending' ? 'disabled' : ''}>
                                 <i class="fas fa-times"></i> Cancel Booking
                             </button>
                         </div>
@@ -556,23 +555,24 @@
                 if (section.classList.contains('hidden')) return;
 
                 const response = await fetch('/api/rides/available');
-                const rides = await response.json();
+                const data = await response.json();
+                const rides = data.data || data;
                 const ridesList = document.getElementById('availableRidesList');
                 
-                if (!rides.length) {
+                if (!rides || rides.length === 0) {
                     ridesList.innerHTML = '<p>No rides available at the moment.</p>';
                     return;
                 }
 
                 ridesList.innerHTML = rides.map(ride => `
                     <div class="ride-item">
-                        <h4>${ride.startLocation} → ${ride.destination}</h4>
-                        <p><strong>Date:</strong> ${new Date(ride.dateTime).toLocaleString()}</p>
+                        <h4>${ride.from} → ${ride.to}</h4>
+                        <p><strong>Date:</strong> ${new Date(ride.departureTime).toLocaleString()}</p>
                         <p><strong>Seats Available:</strong> ${ride.availableSeats}</p>
-                        <p><strong>Price:</strong> $${ride.price}</p>
+                        <p><strong>Price:</strong> $${ride.price} per seat</p>
                         ${ride.notes ? `<p><strong>Notes:</strong> ${ride.notes}</p>` : ''}
                         <div class="ride-actions">
-                            <button class="btn btn-primary" onclick="bookRide('${ride._id}')">
+                            <button class="btn btn-primary" onclick="bookRide('${ride._id}', ${ride.price})">
                                 <i class="fas fa-calendar-plus"></i> Book Ride
                             </button>
                         </div>
@@ -585,14 +585,18 @@
             }
         }
 
-        async function bookRide(rideId) {
+        async function bookRide(rideId, pricePerSeat) {
             const seats = prompt('How many seats would you like to book?', '1');
             
             if (seats && parseInt(seats) > 0) {
                 try {
+                    const numSeats = parseInt(seats);
+                    const totalPrice = pricePerSeat * numSeats;
+                    
                     const bookingData = {
                         rideId: rideId,
-                        numberOfSeats: parseInt(seats)
+                        seats: numSeats,
+                        totalPrice: totalPrice
                     };
 
                     const response = await fetch('/api/bookings', {
@@ -602,12 +606,13 @@
                     });
                     
                     if (response.ok) {
-                        alert('Booking created successfully!');
+                        alert(`Booking created successfully! Total: $${totalPrice}`);
                         loadMyBookings();
+                        loadAvailableRides();
                         updateStats();
                     } else {
                         const error = await response.json();
-                        alert('Error: ' + (error.message || 'Failed to create booking'));
+                        alert('Error: ' + (error.error || error.message || 'Failed to create booking'));
                     }
                 } catch (error) {
                     console.error('Error creating booking:', error);
@@ -619,10 +624,8 @@
         async function cancelBooking(bookingId) {
             if (confirm('Are you sure you want to cancel this booking?')) {
                 try {
-                    const response = await fetch(`/api/bookings/${bookingId}/status`, {
-                        method: 'PATCH',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ status: 'cancelled' })
+                    const response = await fetch(`/api/bookings/${bookingId}`, {
+                        method: 'DELETE'
                     });
                     
                     if (response.ok) {
@@ -639,20 +642,16 @@
             }
         }
 
-        // Stats and utilities
         async function updateStats() {
-            // This would typically fetch real stats from your API
-            // For now, we'll update based on loaded data
             setTimeout(() => {
-                const myRides = document.querySelectorAll('.ride-item').length;
-                const myBookings = document.querySelectorAll('.booking-item').length;
+                const myRides = document.querySelectorAll('#myRidesList .ride-item').length;
+                const myBookings = document.querySelectorAll('#myBookingsList .booking-item').length;
                 
                 document.getElementById('myRidesCount').textContent = myRides;
                 document.getElementById('myBookingsCount').textContent = myBookings;
             }, 500);
         }
 
-        // Logout handler
         document.getElementById('logoutBtn').addEventListener('click', function(e) {
             e.preventDefault();
             if (confirm('Are you sure you want to logout?')) {
@@ -667,13 +666,10 @@
             }
         });
 
-        // Edit ride function (placeholder - would need edit-ride.html page)
         function editRide(rideId) {
             alert('Edit functionality would open an edit form for ride: ' + rideId);
-            // window.location.href = `edit-ride.html?id=${rideId}`;
         }
 
-        // Initialize dashboard when page loads
         document.addEventListener('DOMContentLoaded', loadDashboardData);
     </script>
 </body>

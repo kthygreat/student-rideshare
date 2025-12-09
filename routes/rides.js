@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Ride = require('../models/Ride');
+const { requireAuth } = require('../middleware/auth');
 
 // GET /api/rides - Get all rides
 router.get('/', async (req, res) => {
@@ -40,6 +41,25 @@ router.get('/available', async (req, res) => {
   }
 });
 
+// GET /api/rides/my-rides - Get current user's rides (as driver)
+// THIS MUST BE BEFORE /:id route
+router.get('/my-rides', requireAuth, async (req, res) => {
+  try {
+    const rides = await Ride.find({ driverId: req.session.userId });
+    
+    res.json({
+      success: true,
+      count: rides.length,
+      data: rides
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
 // GET /api/rides/driver/:driverId - Get rides by driver
 router.get('/driver/:driverId', async (req, res) => {
   try {
@@ -59,6 +79,7 @@ router.get('/driver/:driverId', async (req, res) => {
 });
 
 // GET /api/rides/:id - Get a specific ride
+// THIS MUST BE LAST among GET routes with parameters
 router.get('/:id', async (req, res) => {
   try {
     const ride = await Ride.findById(req.params.id);
@@ -83,9 +104,15 @@ router.get('/:id', async (req, res) => {
 });
 
 // POST /api/rides - Create a new ride
-router.post('/', async (req, res) => {
+router.post('/', requireAuth, async (req, res) => {
   try {
-    const ride = new Ride(req.body);
+    // Automatically add the logged-in user as the driver
+    const rideData = {
+      ...req.body,
+      driverId: req.session.userId
+    };
+    
+    const ride = new Ride(rideData);
     const savedRide = await ride.save();
     
     res.status(201).json({
@@ -101,7 +128,7 @@ router.post('/', async (req, res) => {
 });
 
 // PUT /api/rides/:id - Update a ride
-router.put('/:id', async (req, res) => {
+router.put('/:id', requireAuth, async (req, res) => {
   try {
     const ride = await Ride.findByIdAndUpdate(
       req.params.id,
@@ -129,7 +156,7 @@ router.put('/:id', async (req, res) => {
 });
 
 // DELETE /api/rides/:id - Delete a ride
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', requireAuth, async (req, res) => {
   try {
     const ride = await Ride.findByIdAndDelete(req.params.id);
     

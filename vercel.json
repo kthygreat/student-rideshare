@@ -16,12 +16,16 @@
       "dest": "/server.js"
     },
     {
+      "src": "/(.*\\.(?:html|css|js|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot))",
+      "dest": "/public/$1"
+    },
+    {
+      "src": "/",
+      "dest": "/public/index.html"
+    },
+    {
       "src": "/(.*)",
       "dest": "/public/$1"
     }
-  ],
-  "env": {
-    "MONGO_URI": "@mongo_uri",
-    "PORT": "5000"
-  }
+  ]
 }

@@ -26,17 +26,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 // MongoDB Atlas Connection
 const dbURI = process.env.MONGODB_URI;
 
-mongoose.connect(dbURI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
+// ✅ FIXED: Removed deprecated options
+mongoose.connect(dbURI)
 .then(() => {
   console.log('✅ Connected to MongoDB Atlas successfully');
   console.log(`📊 Database: ${mongoose.connection.db.databaseName}`);
 })
 .catch(err => {
   console.error('❌ MongoDB connection error:', err);
-  process.exit(1);
+  // ✅ FIXED: Don't exit on Vercel - just log the error
 });
 
 // MongoDB connection events
@@ -98,16 +96,20 @@ app.get('/health', (req, res) => {
   });
 });
 
-// ✅ ADDED: Catch-all handler to serve frontend for all non-API routes
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
+// ✅ FIXED: Removed catch-all that was breaking other HTML pages
+// The express.static middleware already serves all files from /public
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
-  console.log(`🚀 Student Rideshare Server running on port ${PORT}`);
-  console.log(`🌐 Visit: http://localhost:${PORT}`);
-  console.log(`📁 Serving frontend from: ${path.join(__dirname, 'public')}`);
-  console.log(`⚡ API endpoints available at: http://localhost:${PORT}/api`);
-});
+// ✅ FIXED: Only start server in development, not on Vercel
+if (process.env.VERCEL !== '1') {
+  app.listen(PORT, () => {
+    console.log(`🚀 Student Rideshare Server running on port ${PORT}`);
+    console.log(`🌐 Visit: http://localhost:${PORT}`);
+    console.log(`📁 Serving frontend from: ${path.join(__dirname, 'public')}`);
+    console.log(`⚡ API endpoints available at: http://localhost:${PORT}/api`);
+  });
+}
+
+// ✅ ADDED: Export for Vercel serverless functions
+module.exports = app;

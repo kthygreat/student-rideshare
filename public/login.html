@@ -271,6 +271,11 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
         .fade-in {
             animation: fadeIn 0.8s ease-in-out;
         }
@@ -382,10 +387,6 @@
             const data = Object.fromEntries(formData);
             
             try {
-                // Simulate API call delay for demo
-                await new Promise(resolve => setTimeout(resolve, 1500));
-                
-                // For demo purposes - in real app, this would be your actual API call
                 const response = await fetch('/api/auth/login', {
                     method: 'POST',
                     headers: {
@@ -397,9 +398,9 @@
                 // Remove loading state
                 loginBtn.classList.remove('btn-loading');
                 
-                if (response && response.ok) {
-                    const result = await response.json();
-                    
+                const result = await response.json();
+                
+                if (response.ok) {
                     messageEl.textContent = 'Login successful! Redirecting to dashboard...';
                     messageEl.className = 'alert alert-success';
                     messageEl.style.display = 'block';
@@ -408,17 +409,16 @@
                     loginBtn.style.background = 'linear-gradient(45deg, #28a745, #20c997)';
                     loginBtn.innerHTML = '<i class="fas fa-check"></i> Success! Redirecting...';
                     
-                    // Redirect to dashboard after 2 seconds
-                    setTimeout(() => {
-                        window.location.href = '/dashboard.html';
-                    }, 2000);
-                } else {
-                    // Demo fallback for development
-                    if (!response) {
-                        throw new Error('API not available - this is normal in development');
+                    // Store token if provided
+                    if (result.token) {
+                        localStorage.setItem('token', result.token);
                     }
                     
-                    const result = await response.json();
+                    // Redirect to dashboard after 1.5 seconds
+                    setTimeout(() => {
+                        window.location.href = '/dashboard.html';
+                    }, 1500);
+                } else {
                     messageEl.textContent = result.message || 'Login failed. Please check your credentials.';
                     messageEl.className = 'alert alert-error';
                     messageEl.style.display = 'block';
@@ -433,36 +433,12 @@
                 // Remove loading state
                 loginBtn.classList.remove('btn-loading');
                 
-                // Demo success for development (remove in production)
-                if (error.message.includes('development')) {
-                    messageEl.textContent = 'Demo: Login successful! Redirecting...';
-                    messageEl.className = 'alert alert-success';
-                    messageEl.style.display = 'block';
-                    
-                    loginBtn.style.background = 'linear-gradient(45deg, #28a745, #20c997)';
-                    loginBtn.innerHTML = '<i class="fas fa-check"></i> Demo Login Success!';
-                    
-                    setTimeout(() => {
-                        window.location.href = '/dashboard.html';
-                    }, 2000);
-                } else {
-                    messageEl.textContent = 'Network error. Please check your connection and try again.';
-                    messageEl.className = 'alert alert-error';
-                    messageEl.style.display = 'block';
-                }
+                console.error('Login error:', error);
+                messageEl.textContent = 'Network error. Please check your connection and try again.';
+                messageEl.className = 'alert alert-error';
+                messageEl.style.display = 'block';
             }
         });
-
-        // Add shake animation for errors
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes shake {
-                0%, 100% { transform: translateX(0); }
-                25% { transform: translateX(-5px); }
-                75% { transform: translateX(5px); }
-            }
-        `;
-        document.head.appendChild(style);
 
         // Input focus effects
         const inputs = document.querySelectorAll('input');
